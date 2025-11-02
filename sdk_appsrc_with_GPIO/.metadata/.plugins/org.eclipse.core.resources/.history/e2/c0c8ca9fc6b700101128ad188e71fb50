@@ -1,0 +1,580 @@
+/************************************************************************/
+/*																		*/
+/*	demo.c	--	Zedboard DMA Demo				 						*/
+/*																		*/
+/************************************************************************/
+/*	Author: Sam Lowe											*/
+/*	Copyright 2015, Digilent Inc.										*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*																		*/
+/*		This file contains code for running a demonstration of the		*/
+/*		DMA audio inputs and outputs on the Zedboard.					*/
+/*																		*/
+/*																		*/
+/************************************************************************/
+/*  Notes:																*/
+/*																		*/
+/*		- The DMA max burst size needs to be set to 16 or less			*/
+/*																		*/
+/************************************************************************/
+/*  Revision History:													*/
+/* 																		*/
+/*		8/23/2016(SamL): Created										*/
+/*																		*/
+/************************************************************************/
+
+
+#include "demo.h"
+
+
+
+
+#include "./audio/audio.h"
+#include "./dma/dma.h"
+#include "./intc/intc.h"
+#include "./userio/userio.h"
+
+#include "./iic/iic.h"
+#include "./kws/kws_engine.h"
+
+/***************************** Include Files *********************************/
+
+#include "xaxidma.h"
+
+#include "xparameters.h"
+#include "xil_exception.h"
+#include "xdebug.h"
+#include "xiic.h"
+#include "xaxidma.h"
+#include <stdint.h>
+
+
+
+#ifdef XPAR_INTC_0_DEVICE_ID
+ #include "xintc.h"
+ #include "microblaze_sleep.h"
+#else
+ #include "xscugic.h"
+#include "sleep.h"
+#include "xil_cache.h"
+#endif
+
+/************************** Constant Definitions *****************************/
+
+/*
+ * Device hardware build related constants.
+ */
+
+// Audio constants
+// Number of seconds to record/playback
+// store 1s, playback 1s
+//#define NR_SEC_TO_REC_PLAY		1
+#define I2S_BYTES_PER_FRAME	5U
+static int32_t sign_extend_20bit(uint32_t value)
+{
+    if (value & 0x80000U) {
+        value |= 0xFFF00000U;
+    }
+    return (int32_t)value;
+}
+
+static void unpack_i2s_frames_to_q31(const uint8_t *src,
+                                    size_t frames,
+                                    int32_t *dst)
+{
+    for (size_t i = 0U; i < frames; ++i) {
+        size_t byte_idx = i * I2S_BYTES_PER_FRAME;
+        uint32_t b0 = src[byte_idx + 0U];
+        uint32_t b1 = src[byte_idx + 1U];
+        uint32_t b2 = src[byte_idx + 2U];
+        uint32_t b3 = src[byte_idx + 3U];
+        uint32_t b4 = src[byte_idx + 4U];
+
+        uint32_t left_u = (b0 << 12) | (b1 << 4) | (b2 >> 4);
+        uint32_t right_u = ((b2 & 0x0FU) << 16) | (b3 << 8) | b4;
+
+        int32_t left = sign_extend_20bit(left_u) << 12;
+        int32_t right = sign_extend_20bit(right_u) << 12;
+
+        int64_t mono = ((int64_t)left + (int64_t)right) / 2;
+        dst[i] = (int32_t)mono;
+    }
+}
+
+// 淇敼褰曢煶闀垮害锛屾坊鍔犱竴涓ǔ瀹氭椂闂�0.1s
+#define BIAS_SEC 0.1f  // 鍋忕疆绋冲畾鏃堕暱 0.1 绉�
+#define NR_SEC_TO_REC_PLAY		(1.0f + BIAS_SEC)
+// 鎸夐敭鏃堕棿
+#define KWS_VALID_SEC  1U
+// ADC/DAC sampling rate in Hz
+//#define AUDIO_SAMPLING_RATE		1000
+#define AUDIO_SAMPLING_RATE	  96000
+#define AUDIO_SAMPLE_BYTES	  5U
+#define KWS_SAMPLE_BYTES	  4U
+// Number of samples to record/playback
+#define NR_AUDIO_SAMPLES		((int)(NR_SEC_TO_REC_PLAY*AUDIO_SAMPLING_RATE))
+// KWS鐨勯噰鏍烽鐜囨槸16000
+#define NR_KWS_SAMPLES          ((int)(KWS_VALID_SEC*KWS_SOURCE_SAMPLE_RATE))
+// 涔樹互5鏄洜涓�32浣嶄綅瀹戒箻浠ヨ�虫満鍙岄�氶亾
+#define KWS_DMA_TRANSFER_BYTES		(5U * NR_AUDIO_SAMPLES)
+
+/* Timeout loop counter for reset
+ */
+#define RESET_TIMEOUT_COUNTER	10000
+
+#define TEST_START_VALUE	0x0
+// 闇�瑕佸闊抽杩涜闄嶉噰鏍�
+static int32_t gMicMonoBuffer[NR_AUDIO_SAMPLES];
+static int32_t gKwsInputBuffer[NR_KWS_SAMPLES];
+
+/**************************** Type Definitions *******************************/
+#define AUDIO_FRAME_STRIDE	  KWS_SOURCE_CHANNELS // 1U
+
+//#define AUDIO_BUFFER_BYTES	  ((size_t)NR_SEC_TO_REC_PLAY * AUDIO_SAMPLING_RATE * AUDIO_FRAME_STRIDE * AUDIO_SAMPLE_BYTES)
+// KWS transfer
+/* 绠�鍗曞钩鍧� 6 鐐归檷閲囨牱锛屽彲鍦� PS 绔疄鏃惰繍琛� */
+#define DOWNSAMPLE_RATIO 6
+static void downsample_6x_avg(const int32_t *in, int32_t *out, int input_samples) {
+    int output_samples = input_samples / DOWNSAMPLE_RATIO;
+    for (int i = 0; i < output_samples; ++i) {
+        int64_t sum = 0;
+        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
+            sum += in[i * DOWNSAMPLE_RATIO + j];
+        out[i] = (int32_t)(sum / DOWNSAMPLE_RATIO);
+    }
+}
+/***************** Macros (Inline Functions) Definitions *********************/
+
+
+/************************** Function Prototypes ******************************/
+#if (!defined(DEBUG))
+extern void xil_printf(const char *format, ...);
+#endif
+
+/**
+ * @brief 点亮指定编号的LED（其余LED熄灭）
+ * @param psGpio   已初始化的GPIO实例指针
+ * @param ledIndex 要点亮的LED编号 (0~7)
+ */
+void fnSetSingleLed(XGpio *psGpio, u8 ledIndex)
+{
+    u32 led_value = 0x00;
+    if (ledIndex < 8) {
+        led_value = (1 << ledIndex);  // 只点亮对应LED
+        xil_printf("LED = %d\r\n", led_value);
+    } else {
+        xil_printf("LED index out of range (0-7)\r\n");
+    }
+
+    XGpio_DiscreteWrite(psGpio, LED_CHANNEL, led_value);
+}
+
+
+/************************** Variable Definitions *****************************/
+/*
+ * Device instance definitions
+ */
+
+static XIic sIic;
+static XAxiDma sAxiDma;		/* Instance of the XAxiDma */
+
+static XGpio sUserIO;
+
+volatile sDemo_t Demo = {0};
+
+#ifdef XPAR_INTC_0_DEVICE_ID
+ static XIntc sIntc;
+#else
+ static XScuGic sIntc;
+#endif
+
+//
+// Interrupt vector table
+#ifdef XPAR_INTC_0_DEVICE_ID
+const ivt_t ivt[] = {
+	//IIC
+	{XPAR_AXI_INTC_0_AXI_IIC_0_IIC2INTC_IRPT_INTR, (XInterruptHandler)XIic_InterruptHandler, &sIic},
+	//DMA Stream to MemoryMap Interrupt handler
+	{XPAR_AXI_INTC_0_AXI_DMA_0_S2MM_INTROUT_INTR, (XInterruptHandler)fnS2MMInterruptHandler, &sAxiDma},
+	//DMA MemoryMap to Stream Interrupt handler
+	{XPAR_AXI_INTC_0_AXI_DMA_0_MM2S_INTROUT_INTR, (XInterruptHandler)fnMM2SInterruptHandler, &sAxiDma},
+	//User I/O (buttons, switches, LEDs)
+	{XPAR_AXI_INTC_0_AXI_GPIO_0_IP2INTC_IRPT_INTR, (XInterruptHandler)fnUserIOIsr, &sUserIO}
+};
+#else
+const ivt_t ivt[] = {
+	//IIC
+	{XPAR_FABRIC_AXI_IIC_0_IIC2INTC_IRPT_INTR, (Xil_ExceptionHandler)XIic_InterruptHandler, &sIic},
+	//DMA Stream to MemoryMap Interrupt handler
+	{XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR, (Xil_ExceptionHandler)fnS2MMInterruptHandler, &sAxiDma},
+	//DMA MemoryMap to Stream Interrupt handler
+	{XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR, (Xil_ExceptionHandler)fnMM2SInterruptHandler, &sAxiDma},
+	//User I/O (buttons, switches, LEDs)
+	{XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR, (Xil_ExceptionHandler)fnUserIOIsr, &sUserIO}
+};
+#endif
+
+
+/*****************************************************************************/
+/**
+*
+* Main function
+*
+* This function is the main entry of the interrupt test. It does the following:
+*	Initialize the interrupt controller
+*	Initialize the IIC controller
+*	Initialize the User I/O driver
+*	Initialize the DMA engine
+*	Initialize the Audio I2S controller
+*	Enable the interrupts
+*	Wait for a button event then start selected task
+*	Wait for task to complete
+*
+* @param	None
+*
+* @return
+*		- XST_SUCCESS if example finishes successfully
+*		- XST_FAILURE if example fails.
+*
+* @note		None.
+*
+******************************************************************************/
+int main(void)
+{
+	int Status;
+
+	Demo.u8Verbose = 1;
+	Demo.fKwsEngineReady = 0;
+	Demo.fKwsResultValid = 0;
+	Demo.u32KwsClass = 0;
+	Demo.fKwsConfidence = 0.0f;
+
+	//Xil_DCacheDisable();
+
+	xil_printf("\r\n--- Entering main() --- \r\n");
+
+
+	//
+	//Initialize the interrupt controller
+
+	Status = fnInitInterruptController(&sIntc);
+	if(Status != XST_SUCCESS) {
+		xil_printf("Error initializing interrupts");
+		return XST_FAILURE;
+	}
+
+
+	// Initialize IIC controller
+	Status = fnInitIic(&sIic);
+	if(Status != XST_SUCCESS) {
+		xil_printf("Error initializing I2C controller");
+		return XST_FAILURE;
+	}
+
+    // Initialize User I/O driver
+    Status = fnInitUserIO(&sUserIO);
+    if(Status != XST_SUCCESS) {
+    	xil_printf("User I/O ERROR");
+    	return XST_FAILURE;
+    }
+
+
+	//Initialize DMA
+	Status = fnConfigDma(&sAxiDma);
+	if(Status != XST_SUCCESS) {
+		xil_printf("DMA configuration ERROR");
+		return XST_FAILURE;
+	}
+
+
+	//Initialize Audio I2S
+	Status = fnInitAudio();
+	if(Status != XST_SUCCESS) {
+		xil_printf("Audio initializing ERROR");
+		return XST_FAILURE;
+	}
+
+
+	// Enable all interrupts in our interrupt vector table
+	// Make sure all driver instances using interrupts are initialized first
+	fnEnableInterrupts(&sIntc, &ivt[0], sizeof(ivt)/sizeof(ivt[0]));
+	// initial KwsEngine
+	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
+
+	if(Status == XST_SUCCESS) {
+		Demo.fKwsEngineReady = 1;
+		xil_printf("\r\nKWS engine initialization successful;\r\n");
+	} else {
+		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
+		return Status;
+	}
+
+//	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
+
+//	if(Status == XST_SUCCESS) {
+//		Demo.fKwsEngineReady = 1;
+//	} else {
+//		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
+//	}
+
+//	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
+/*	if(Status == XST_SUCCESS) {
+		Demo.fKwsEngineReady = 1;
+	} else {
+		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
+	}*/
+
+    xil_printf("\r\nInitialization done");
+    xil_printf("\r\n");
+    xil_printf("\r\nControls:");
+    xil_printf("\r\n    BTNL: Play recording on LINE OUT");
+    xil_printf("\r\n    BTNU: Record from MIC IN");
+    xil_printf("\r\n    BTND: Play recording on HPH OUT");
+    xil_printf("\r\n    BTNR: Record from LINE IN");
+
+    //main loop
+
+    while(1) {
+
+//    	fnSetSingleLed(&sUserIO, 2);
+
+//    	xil_printf("----------------------------------------------------------\r\n");
+//		xil_printf("Genesys 2 DMA Audio Demo\r\n");
+//		xil_printf("----------------------------------------------------------\r\n");
+
+    	//Xil_DCacheDisable();
+
+    	// Checking the DMA S2MM event flag
+			if (Demo.fDmaS2MMEvent)
+			{
+				xil_printf("\r\nRecording Done...");
+
+				// Disable Stream function to send data (S2MM)
+				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
+				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
+				//Flush cache
+				Xil_DCacheInvalidateRange((u32) MEM_BASE_ADDR, KWS_DMA_TRANSFER_BYTES);
+
+				const int engine_ready = (Demo.fKwsEngineReady != 0U) && (KwsEngine_IsReady() != 0);
+				xil_printf("\r\n Demo_KWS_Ready = %d \r\n", engine_ready);
+				xil_printf("\r\n Demo.fKwsEngineReady = %d \r\n", Demo.fKwsEngineReady);
+				xil_printf("\r\n KwsEngine_IsReady = %d \r\n", KwsEngine_IsReady());
+				if (engine_ready)
+				{
+					Demo.fKwsResultValid = 0;
+					const size_t total_frames = KWS_DMA_TRANSFER_BYTES / I2S_BYTES_PER_FRAME;
+					const size_t offset_frames = (size_t)(AUDIO_SAMPLING_RATE * BIAS_SEC);
+					const size_t available_frames = (total_frames > offset_frames) ? (total_frames - offset_frames) : 0U;
+					const size_t required_frames = (size_t)NR_KWS_SAMPLES * DOWNSAMPLE_RATIO;
+
+					if (available_frames >= required_frames)
+					{
+						const uint8_t *dma_bytes = (const uint8_t *)(uintptr_t)MEM_BASE_ADDR;
+						unpack_i2s_frames_to_q31(dma_bytes, total_frames, gMicMonoBuffer);
+
+						const int downsample_input = (int)required_frames;
+						downsample_6x_avg(gMicMonoBuffer + offset_frames, gKwsInputBuffer, downsample_input);
+						xil_printf("\r\n    sampling done");
+
+						u32 classIndex = 0U;
+						float confidence = 0.0f;
+
+						Status = KwsEngine_ProcessRecording(gKwsInputBuffer,
+							NR_KWS_SAMPLES,
+							&classIndex,
+							&confidence);
+						// 亮灯
+						int led = classIndex - 2;
+						if (led<=0) {
+							led = 0;
+						}
+						fnSetSingleLed(&sUserIO, 2);
+						if (Status == XST_SUCCESS)
+						{
+							int scaled = (int)(confidence * 10000.0f + 0.5f);
+							Demo.u32KwsClass = classIndex;
+							Demo.fKwsConfidence = confidence;
+							Demo.fKwsResultValid = 1;
+							xil_printf("\r\nKWS inference: class %lu (confidence %d.%02d%%)",
+								(unsigned long)classIndex,
+								scaled / 100,
+								scaled % 100);
+						}
+						else
+						{
+							xil_printf("\r\nKWS inference failed");
+							Demo.fKwsResultValid = 0;
+						}
+						// 直接播放
+						xil_printf("\r\nStart Playback...\r\n");
+						fnSetHpOutput();
+						usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
+						//
+//    							fnAudioPlay(sAxiDma,AUDIO_SAMPLING_RATE);
+						fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+					}
+					else
+					{
+						xil_printf("\r\nInsufficient microphone audio: have %lu frames, need %lu\r\n",
+							(unsigned long)available_frames,
+							(unsigned long)required_frames);
+						Demo.fKwsResultValid = 0;
+					}
+				}
+				else
+				{
+					xil_printf("\r\nKWS engine not ready; skipping inference\r\n");
+					Demo.fKwsResultValid = 0;
+				}
+
+				// Reset S2MM event and record flag
+				Demo.fDmaS2MMEvent = 0;
+				Demo.fAudioRecord = 0;
+		}
+
+		// Checking the DMA MM2S event flag
+    			if (Demo.fDmaMM2SEvent)
+    			{
+    				xil_printf("\r\nPlayback Done...");
+
+    				// Disable Stream function to send data (S2MM)
+    				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
+    				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
+    				//Flush cache
+//					//microblaze_flush_dcache();
+    				//Xil_DCacheFlushRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
+    				// Reset MM2S event and playback flag
+    				Demo.fDmaMM2SEvent = 0;
+    				Demo.fAudioPlayback = 0;
+    			}
+
+    			// Checking the DMA Error event flag
+    			if (Demo.fDmaError)
+    			{
+    				xil_printf("\r\nDma Error...");
+    				xil_printf("\r\nDma Reset...");
+
+
+    				Demo.fDmaError = 0;
+    				Demo.fAudioPlayback = 0;
+    				Demo.fAudioRecord = 0;
+    			}
+
+    			// Checking the btn change event
+    			if(Demo.fUserIOEvent) {
+
+    				switch(Demo.chBtn) {
+    					case 'u':
+    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    						{
+    							xil_printf("\r\nStart Recording...\r\n");
+    							fnSetMicInput();
+    							usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
+    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+//    							fnAudioRecord(sAxiDma,AUDIO_SAMPLING_RATE);
+    							Demo.fAudioRecord = 1;
+    						}
+    						else
+    						{
+    							if (Demo.fAudioRecord)
+    							{
+    								xil_printf("\r\nStill Recording...\r\n");
+    							}
+    							else
+    							{
+    								xil_printf("\r\nStill Playing back...\r\n");
+    							}
+    						}
+    						break;
+    					case 'd':
+    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    						{
+    							xil_printf("\r\nStart Playback...\r\n");
+    							fnSetHpOutput();
+    							usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
+    							//
+//    							fnAudioPlay(sAxiDma,AUDIO_SAMPLING_RATE);
+    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+    							Demo.fAudioPlayback = 1;
+    						}
+    						else
+    						{
+    							if (Demo.fAudioRecord)
+    							{
+    								xil_printf("\r\nStill Recording...\r\n");
+    							}
+    							else
+    							{
+    								xil_printf("\r\nStill Playing back...\r\n");
+    							}
+    						}
+    						break;
+    					case 'r':
+    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    						{
+    							xil_printf("\r\nStart Recording...\r\n");
+    							fnSetLineInput();
+    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+    							Demo.fAudioRecord = 1;
+    						}
+    						else
+    						{
+    							if (Demo.fAudioRecord)
+    							{
+    								xil_printf("\r\nStill Recording...\r\n");
+    							}
+    							else
+    							{
+    								xil_printf("\r\nStill Playing back...\r\n");
+    							}
+    						}
+    						break;
+    					case 'l':
+    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
+    						{
+    							xil_printf("\r\nStart Playback...");
+    							fnSetLineOutput();
+    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+    							Demo.fAudioPlayback = 1;
+    						}
+    						else
+    						{
+    							if (Demo.fAudioRecord)
+    							{
+    								xil_printf("\r\nStill Recording...\r\n");
+    							}
+    							else
+    							{
+    								xil_printf("\r\nStill Playing back...\r\n");
+    							}
+    						}
+    						break;
+    					default:
+    						break;
+    				}
+
+    				// Reset the user I/O flag
+    				Demo.chBtn = 0;
+    				Demo.fUserIOEvent = 0;
+
+
+    			}
+    	//usleep(90000);
+    }
+
+	xil_printf("\r\n--- Exiting main() --- \r\n");
+
+
+	return XST_SUCCESS;
+
+}
+
+
+
+
+
+
+
+
+

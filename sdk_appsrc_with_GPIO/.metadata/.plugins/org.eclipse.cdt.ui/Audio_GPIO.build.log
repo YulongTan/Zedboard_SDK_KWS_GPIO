@@ -1,0 +1,10 @@
+16:36:31 **** Incremental Build of configuration Debug for project Audio_GPIO ****
+make all 
+D:/Vitis/Vitis/2022.1/gnuwin/bin/make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+D:/Vitis/Vitis/2022.1/gnuwin/bin/make --no-print-directory main-build
+make[1]: Nothing to be done for 'main-build'.
+
+16:36:32 Build Finished (took 780ms)
+

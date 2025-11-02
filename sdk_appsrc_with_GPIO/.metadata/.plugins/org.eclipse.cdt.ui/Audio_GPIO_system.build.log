@@ -1,0 +1,10 @@
+16:36:33 **** Incremental Build of configuration Debug for project Audio_GPIO_system ****
+make all 
+Generating bif file for the system project
+generate_system_bif.bat 8761 D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm standalone_domain D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/system.bif
+sdcard_gen --xpfm D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm --sys_config Audio_with_GPIO --bif D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/system.bif --bitstream D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit --elf D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf,ps7_cortexa9_0
+creating BOOT.BIN using D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+Running D:/Vitis/Vitis/2022.1/bin/bootgen  -image D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN
+
+16:36:40 Build Finished (took 7s.475ms)
+

@@ -1,0 +1,52 @@
+timestamp=[2025-11-02 14:32:22], mode=WORKBENCH_START, duration=0:00:07.938, duration_ms=7938, data={}
+timestamp=[2025-11-02 14:32:23], mode=WORKBENCH_UI_INIT, duration=0:00:00.552, duration_ms=552, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2025-11-02 14:32:24], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.502, duration_ms=502, data={}
+timestamp=[2025-11-02 14:33:49], mode=PLATFORM_CREATION, duration=0:00:13.985, duration_ms=13985, data={platform_source=dsa, os=standalone, processor=ps7_cortexa9, platform=null}
+timestamp=[2025-11-02 14:35:19], mode=PLATFORM_GENERATION, duration=0:00:16.199, duration_ms=16199, data={name=Audio_with_GPIO}
+timestamp=[2025-11-02 14:38:34], mode=APP_CREATION, duration=0:00:06.534, duration_ms=6534, data={name=Audio_GPIO, project_type=sdk, os=standalone, processor=cortex-a9, runtime=C/C++, platform=Audio_with_GPIO, application_type=application}
+timestamp=[2025-11-02 14:39:23], mode=BUILD, duration=0:00:01.330, duration_ms=1330, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:40:27], mode=BUILD, duration=0:00:00.442, duration_ms=442, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:40:35], mode=BUILD, duration=0:00:07.774, duration_ms=7774, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:49:41], mode=BUILD, duration=0:00:00.258, duration_ms=258, data={name=Audio_GPIO, configuration=Debug, clean_build=true}
+timestamp=[2025-11-02 14:49:44], mode=BUILD, duration=0:00:02.710, duration_ms=2710, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:51:16], mode=BUILD, duration=0:00:01.316, duration_ms=1316, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:52:36], mode=BUILD, duration=0:00:00.303, duration_ms=303, data={name=Audio_GPIO, configuration=Debug, clean_build=true}
+timestamp=[2025-11-02 14:52:39], mode=BUILD, duration=0:00:02.758, duration_ms=2758, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:54:31], mode=BUILD, duration=0:00:01.939, duration_ms=1939, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:54:46], mode=BUILD, duration=0:00:01.854, duration_ms=1854, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:58:19], mode=BUILD, duration=0:00:02.044, duration_ms=2044, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 14:58:27], mode=BUILD, duration=0:00:07.526, duration_ms=7526, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:07:16], mode=BUILD, duration=0:00:02.751, duration_ms=2751, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:07:24], mode=BUILD, duration=0:00:07.603, duration_ms=7603, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:07:29], mode=BUILD, duration=0:00:00.774, duration_ms=774, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:07:36], mode=BUILD, duration=0:00:07.343, duration_ms=7343, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:30:17], mode=BUILD, duration=0:00:01.387, duration_ms=1387, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:30:24], mode=BUILD, duration=0:00:07.448, duration_ms=7448, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:30:53], mode=BUILD, duration=0:00:00.772, duration_ms=772, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:31:01], mode=BUILD, duration=0:00:07.434, duration_ms=7434, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:51:51], mode=BUILD, duration=0:00:01.521, duration_ms=1521, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:51:59], mode=BUILD, duration=0:00:07.995, duration_ms=7995, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:53:18], mode=BUILD, duration=0:00:01.364, duration_ms=1364, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:53:25], mode=BUILD, duration=0:00:07.377, duration_ms=7377, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:56:41], mode=BUILD, duration=0:00:01.624, duration_ms=1624, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:56:49], mode=BUILD, duration=0:00:07.438, duration_ms=7438, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:59:03], mode=BUILD, duration=0:00:01.517, duration_ms=1517, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:59:11], mode=BUILD, duration=0:00:07.402, duration_ms=7402, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 15:59:57], mode=BUILD, duration=0:00:01.331, duration_ms=1331, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:00:05], mode=BUILD, duration=0:00:07.385, duration_ms=7385, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:00:20], mode=BUILD, duration=0:00:00.782, duration_ms=782, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:00:28], mode=BUILD, duration=0:00:07.311, duration_ms=7311, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:03:42], mode=BUILD, duration=0:00:00.764, duration_ms=764, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:03:50], mode=BUILD, duration=0:00:07.386, duration_ms=7386, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:13:23], mode=BUILD, duration=0:00:00.827, duration_ms=827, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:13:31], mode=BUILD, duration=0:00:07.939, duration_ms=7939, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:19:42], mode=BUILD, duration=0:00:01.712, duration_ms=1712, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:19:50], mode=BUILD, duration=0:00:07.448, duration_ms=7448, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:24:15], mode=BUILD, duration=0:00:01.392, duration_ms=1392, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:24:22], mode=BUILD, duration=0:00:07.329, duration_ms=7329, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:28:53], mode=BUILD, duration=0:00:01.572, duration_ms=1572, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:29:01], mode=BUILD, duration=0:00:07.477, duration_ms=7477, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:35:58], mode=BUILD, duration=0:00:02.092, duration_ms=2092, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:36:07], mode=BUILD, duration=0:00:08.026, duration_ms=8026, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:36:32], mode=BUILD, duration=0:00:00.795, duration_ms=795, data={name=Audio_GPIO, configuration=Debug, clean_build=false}
+timestamp=[2025-11-02 16:36:40], mode=BUILD, duration=0:00:07.480, duration_ms=7480, data={name=Audio_GPIO_system, configuration=Debug, clean_build=false}
