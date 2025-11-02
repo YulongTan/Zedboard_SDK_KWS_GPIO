@@ -660,7 +660,7 @@ void fnAudioRecord(XAxiDma AxiDma, u32 u32NrSamples)
  *
  * @return	none.
  *****************************************************************************/
-void fnAudioPlay(XAxiDma AxiDma, u32 u32NrSamples)
+void fnAudioPlay(XAxiDma AxiDma, UINTPTR baseAddr, u32 u32NrSamples)
 {
 	union ubitField uTransferVariable;
 
@@ -676,12 +676,12 @@ void fnAudioPlay(XAxiDma AxiDma, u32 u32NrSamples)
 	Xil_Out32(I2S_TRANSFER_CONTROL_REG, uTransferVariable.l);
 	uTransferVariable.bit.u32bit0 = 1;
 	Xil_Out32(I2S_TRANSFER_CONTROL_REG, uTransferVariable.l);
-////	// ∂™∆˙«∞√Ê100ms
-//	int offset = (int)(AUDIO_SAMPLING_RATE * 0.1f);  // ∂™µÙ«∞100ms
+	uTransferVariable.l = XAxiDma_SimpleTransfer(&AxiDma, baseAddr, AUDIO_SAMPLE_BYTES*u32NrSamples, XAXIDMA_DMA_TO_DEVICE);
+//	int offset = (int)(AUDIO_SAMPLING_RATE * 0.1f);  // ‰∏¢ÊéâÂâç100ms
 //	const int32_t *audio_data = ((int32_t *)MEM_BASE_ADDR) + offset;
-//    /* ∂™µÙ«∞ 100 ms “Ù∆µ ˝æ› */
+//    /* ‰∏¢ÊéâÂâç 100 ms Èü≥È¢ëÊï∞ÊçÆ */
 //    int offset_frames = (int)(AUDIO_SAMPLING_RATE * 0.1f);   // 100 ms
-//    size_t offset_bytes = 5U * offset_frames;                // √ø÷° 5 bytes
+//    size_t offset_bytes = 5U * offset_frames;                // ÊØèÂ∏ß 5 bytes
 //    size_t remaining_bytes = 5U * (u32NrSamples - offset_frames);
 //    const u8 *audio_data = (const u8 *)MEM_BASE_ADDR + offset_bytes;
 //

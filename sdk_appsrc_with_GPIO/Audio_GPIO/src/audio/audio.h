@@ -242,7 +242,7 @@ XStatus fnAudioPllConfig();
 XStatus fnAudioStartupConfig ();
 XStatus fnInitAudio();
 void fnAudioRecord(XAxiDma AxiDma, u32 u32NrSamples);
-void fnAudioPlay(XAxiDma AxiDma, u32 u32NrSamples);
+void fnAudioPlay(XAxiDma AxiDma, UINTPTR baseAddr, u32 u32NrSamples);
 void fnSetLineInput();
 void fnSetLineOutput();
 void fnSetMicInput();

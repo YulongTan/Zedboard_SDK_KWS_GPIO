@@ -1005,8 +1005,10 @@ int main(void)
                 /* === 自动播放预处理结果 === */
                 xil_printf("[PLAY] Auto playback of preprocessed 1s audio...\r\n");
                 upsample_6x_for_playback(gKws16k,gPlayback96k,NR_KWS_SAMPLES);
+                UINTPTR playback_base = (UINTPTR)MEM_BASE_ADDR +
+                                       (UINTPTR)START_OFFSET_FRAMES * I2S_BYTES_PER_FRAME;
                 fnSetHpOutput(); usleep(100000);
-                fnAudioPlay(sAxiDma,SEGMENT_FRAMES);
+                fnAudioPlay(sAxiDma, playback_base, SEGMENT_FRAMES);
 
 //                save_16k_int32_to_sd(KWS_PROC_RAW_PATH,gKws16k,NR_KWS_SAMPLES);
 
@@ -1038,7 +1040,7 @@ int main(void)
             }else if(Demo.chBtn=='d' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
                 xil_printf("Start Playback...\r\n");
                 fnSetHpOutput(); usleep(100000);
-                fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+                fnAudioPlay(sAxiDma,(UINTPTR)MEM_BASE_ADDR,NR_AUDIO_SAMPLES);
                 Demo.fAudioPlayback=1;
             }
             Demo.fUserIOEvent=0; Demo.chBtn=0;
