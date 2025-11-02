@@ -711,6 +711,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include "xparameters.h"
@@ -800,46 +801,77 @@ static int32_t sign_extend_20bit(uint32_t v)
 }
 
 /* I2S 解包：5 Bytes → 单声道Q31样本 */
-static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, int32_t *dst)
+static void decode_i2s_frame(const uint8_t *src, int reversed,
+                             int32_t *left_q31, int32_t *right_q31)
 {
-    if (frames == 0U) return;
-
-    /* 统计若干帧的首、末字节，推断 DMA 是否做了小端反序 */
-    size_t check_frames = (frames < 64U) ? frames : 64U;
-    int score = 0;
-    for (size_t i = 0; i < check_frames; ++i) {
-        size_t idx = i * I2S_BYTES_PER_FRAME;
-        uint8_t b0 = src[idx];
-        uint8_t b4 = src[idx + 4U];
-        if (b0 == b4) {
-            continue;
-        }
-        if (b0 < b4) {
-            ++score;
-        } else {
-            --score;
-        }
+    uint32_t B0, B1, B2, B3, B4;
+    if (!reversed) {
+        B0 = src[0]; B1 = src[1]; B2 = src[2];
+        B3 = src[3]; B4 = src[4];
+    } else {
+        B4 = src[0]; B3 = src[1]; B2 = src[2];
+        B1 = src[3]; B0 = src[4];
     }
 
-    int reversed = (score > 0);
-    xil_printf("[I2S] Byte order: %s\r\n", reversed ? "little-endian (DMA reversed)"
-                                               : "big-endian (standard)");
+    uint32_t left_u  = (B0 << 12) | (B1 << 4) | (B2 >> 4);
+    uint32_t right_u = ((B2 & 0x0F) << 16) | (B3 << 8) | B4;
+    *left_q31  = sign_extend_20bit(left_u)  << 12;
+    *right_q31 = sign_extend_20bit(right_u) << 12;
+}
+
+static int detect_dma_byte_reversal(const uint8_t *src, size_t frames)
+{
+    if (frames < 2U) {
+        return 0;
+    }
+
+    size_t check_frames = frames < 256U ? frames : 256U;
+    int64_t normal_score = 0;
+    int64_t reversed_score = 0;
+    int32_t prev_normal = 0;
+    int32_t prev_reversed = 0;
+    int first = 1;
+
+    for (size_t i = 0; i < check_frames; ++i) {
+        const uint8_t *frame = src + i * I2S_BYTES_PER_FRAME;
+        int32_t left_normal, right_normal;
+        int32_t left_reversed, right_reversed;
+
+        decode_i2s_frame(frame, 0, &left_normal, &right_normal);
+        decode_i2s_frame(frame, 1, &left_reversed, &right_reversed);
+
+        int32_t mono_normal = (left_normal + right_normal) >> 1;
+        int32_t mono_reversed = (left_reversed + right_reversed) >> 1;
+
+        if (!first) {
+            normal_score += llabs((int64_t)mono_normal - prev_normal);
+            reversed_score += llabs((int64_t)mono_reversed - prev_reversed);
+        } else {
+            first = 0;
+        }
+
+        prev_normal = mono_normal;
+        prev_reversed = mono_reversed;
+    }
+
+    return reversed_score < normal_score;
+}
+
+static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, int32_t *dst)
+{
+    if (frames == 0U) {
+        return;
+    }
+
+    int reversed = detect_dma_byte_reversal(src, frames);
+    xil_printf("[I2S] Byte order: %s\r\n",
+               reversed ? "little-endian (DMA reversed)"
+                        : "big-endian (standard)");
 
     for (size_t i = 0; i < frames; ++i) {
-        size_t idx = i * I2S_BYTES_PER_FRAME;
-        uint32_t B0,B1,B2,B3,B4;
-        if (!reversed) {
-            B0 = src[idx]; B1 = src[idx+1]; B2 = src[idx+2];
-            B3 = src[idx+3]; B4 = src[idx+4];
-        } else {
-            B4 = src[idx]; B3 = src[idx+1]; B2 = src[idx+2];
-            B1 = src[idx+3]; B0 = src[idx+4];
-        }
-        uint32_t left_u  = (B0 << 12) | (B1 << 4) | (B2 >> 4);
-        uint32_t right_u = ((B2 & 0x0F) << 16) | (B3 << 8) | B4;
-        int32_t left  = sign_extend_20bit(left_u)  << 12;
-        int32_t right = sign_extend_20bit(right_u) << 12;
-        dst[i] = (left + right) >> 1;  // stereo → mono
+        int32_t left, right;
+        decode_i2s_frame(src + i * I2S_BYTES_PER_FRAME, reversed, &left, &right);
+        dst[i] = (left + right) >> 1;
     }
 }
 
@@ -919,7 +951,16 @@ static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t sa
         return;
     }
 
-    fr = f_open(&fil, path, FA_CREATE_ALWAYS | FA_WRITE);
+    const char *open_path = path;
+    fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+    if (fr == FR_INVALID_NAME) {
+        static const char fallback_path[] = "0:/REC16K.WAV";
+        xil_printf("[SD] Invalid filename '%s', falling back to %s\r\n",
+                   path, fallback_path);
+        open_path = fallback_path;
+        fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+    }
+
     if (fr != FR_OK) {
         xil_printf("[SD] Open file failed (%d)\r\n", fr);
         return;
@@ -947,7 +988,7 @@ static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t sa
     }
     f_close(&fil);
 
-    xil_printf("[SD] %s saved\r\n", path);
+    xil_printf("[SD] %s saved\r\n", open_path);
 }
 /* ================================================================ */
 /*                       主程序入口                                 */
