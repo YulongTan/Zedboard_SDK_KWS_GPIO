@@ -676,7 +676,8 @@ void fnAudioPlay(XAxiDma AxiDma, UINTPTR baseAddr, u32 u32NrSamples)
 	Xil_Out32(I2S_TRANSFER_CONTROL_REG, uTransferVariable.l);
 	uTransferVariable.bit.u32bit0 = 1;
 	Xil_Out32(I2S_TRANSFER_CONTROL_REG, uTransferVariable.l);
-	uTransferVariable.l = XAxiDma_SimpleTransfer(&AxiDma, baseAddr, AUDIO_SAMPLE_BYTES*u32NrSamples, XAXIDMA_DMA_TO_DEVICE);
+        Xil_DCacheFlushRange(baseAddr, AUDIO_SAMPLE_BYTES * u32NrSamples);
+        uTransferVariable.l = XAxiDma_SimpleTransfer(&AxiDma, baseAddr, AUDIO_SAMPLE_BYTES*u32NrSamples, XAXIDMA_DMA_TO_DEVICE);
 //	int offset = (int)(AUDIO_SAMPLING_RATE * 0.1f);  // 丢掉前100ms
 //	const int32_t *audio_data = ((int32_t *)MEM_BASE_ADDR) + offset;
 //    /* 丢掉前 100 ms 音频数据 */
@@ -687,8 +688,7 @@ void fnAudioPlay(XAxiDma AxiDma, UINTPTR baseAddr, u32 u32NrSamples)
 //
 //	uTransferVariable.l = XAxiDma_SimpleTransfer(&AxiDma,(u32) audio_data, 5*u32NrSamples, XAXIDMA_DMA_TO_DEVICE);
 
-	uTransferVariable.l = XAxiDma_SimpleTransfer(&AxiDma,(u32) MEM_BASE_ADDR, AUDIO_SAMPLE_BYTES*u32NrSamples, XAXIDMA_DMA_TO_DEVICE);
-	if (uTransferVariable.l != XST_SUCCESS)
+    if (uTransferVariable.l != XST_SUCCESS)
 	{
 		if (Demo.u8Verbose)
 			xil_printf("\n fail @ play; ERROR: %d", uTransferVariable.l);
