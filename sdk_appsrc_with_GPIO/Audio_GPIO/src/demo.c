@@ -712,6 +712,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
+#include <string.h>
 #include "xparameters.h"
 #include "xil_printf.h"
 #include "xil_cache.h"
@@ -752,6 +753,7 @@ volatile sDemo_t Demo = {0};
 static FATFS fs; static FIL fil;
 static int32_t gMicMono96k[NR_AUDIO_SAMPLES];
 static int32_t gKws16k[NR_KWS_SAMPLES];
+static int16_t gKws16kPcm16[NR_KWS_SAMPLES];
 static int32_t gPlayback96k[SEGMENT_FRAMES];
 
 /* ================================================================ */
@@ -801,7 +803,27 @@ static int32_t sign_extend_20bit(uint32_t v)
 static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, int32_t *dst)
 {
     if (frames == 0U) return;
-    int reversed = 0;  // 可改为1若DMA写反序
+
+    /* 统计若干帧的首、末字节，推断 DMA 是否做了小端反序 */
+    size_t check_frames = (frames < 64U) ? frames : 64U;
+    int score = 0;
+    for (size_t i = 0; i < check_frames; ++i) {
+        size_t idx = i * I2S_BYTES_PER_FRAME;
+        uint8_t b0 = src[idx];
+        uint8_t b4 = src[idx + 4U];
+        if (b0 == b4) {
+            continue;
+        }
+        if (b0 < b4) {
+            ++score;
+        } else {
+            --score;
+        }
+    }
+
+    int reversed = (score > 0);
+    xil_printf("[I2S] Byte order: %s\r\n", reversed ? "little-endian (DMA reversed)"
+                                               : "big-endian (standard)");
 
     for (size_t i = 0; i < frames; ++i) {
         size_t idx = i * I2S_BYTES_PER_FRAME;
@@ -841,24 +863,57 @@ static void upsample_6x_for_playback(const int32_t *in16k, int32_t *out96k, int 
             out96k[i*DOWNSAMPLE_RATIO+j] = in16k[i];
 }
 
-/* SD 保存函数 */
-//static void save_int32_to_sd(const char *path,const int32_t *buf,size_t samples)
-//{
-//    FRESULT fr=f_mount(&fs,"0:/",1);
-//    if(fr!=FR_OK){xil_printf("[SD] mount fail %d\r\n",fr);return;}
-//    fr=f_open(&fil,path,FA_CREATE_ALWAYS|FA_WRITE);
-//    if(fr!=FR_OK){xil_printf("[SD] open fail %d\r\n",fr);return;}
-//    UINT bw; UINT size=samples*sizeof(int32_t);
-//    Xil_DCacheInvalidateRange((UINTPTR)buf,size);
-//    fr=f_write(&fil,buf,size,&bw); f_close(&fil);
-//    xil_printf("[SD] %s %s (%lu bytes)\r\n",
-//        path,(fr==FR_OK&&bw==size)?"saved":"fail",(unsigned long)bw);
-//}
-static void save_int32_to_sd(const char *path, const int32_t *buf, size_t samples)
+static void q31_to_pcm16(const int32_t *src, int16_t *dst, size_t samples)
 {
-    FRESULT fr;
+    for (size_t i = 0; i < samples; ++i) {
+        int32_t v = src[i] >> 16;  /* 20-bit 样本 → 16-bit PCM */
+        if (v > 32767) {
+            v = 32767;
+        } else if (v < -32768) {
+            v = -32768;
+        }
+        dst[i] = (int16_t)v;
+    }
+}
+
+typedef struct __attribute__((__packed__)) {
+    char     riff_id[4];
+    uint32_t riff_size;
+    char     wave_id[4];
+    char     fmt_id[4];
+    uint32_t fmt_size;
+    uint16_t audio_format;
+    uint16_t num_channels;
+    uint32_t sample_rate;
+    uint32_t byte_rate;
+    uint16_t block_align;
+    uint16_t bits_per_sample;
+    char     data_id[4];
+    uint32_t data_size;
+} wav_header_t;
+
+static void fill_wav_header(wav_header_t *hdr, uint32_t sample_rate, uint32_t frames)
+{
+    const uint32_t data_bytes = frames * sizeof(int16_t);
+    memcpy(hdr->riff_id, "RIFF", 4);
+    hdr->riff_size = 36U + data_bytes;
+    memcpy(hdr->wave_id, "WAVE", 4);
+    memcpy(hdr->fmt_id,  "fmt ", 4);
+    hdr->fmt_size       = 16U;
+    hdr->audio_format   = 1U;
+    hdr->num_channels   = 1U;
+    hdr->sample_rate    = sample_rate;
+    hdr->block_align    = sizeof(int16_t);
+    hdr->byte_rate      = sample_rate * hdr->block_align;
+    hdr->bits_per_sample = 16U;
+    memcpy(hdr->data_id, "data", 4);
+    hdr->data_size = data_bytes;
+}
+
+static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t samples, uint32_t sample_rate)
+{
     FATFS *pfs = &fs;
-    fr = f_mount(pfs, "0:/", 1);
+    FRESULT fr = f_mount(pfs, "0:/", 1);
     if (fr != FR_OK) {
         xil_printf("[SD] Mount failed (%d)\r\n", fr);
         return;
@@ -870,13 +925,29 @@ static void save_int32_to_sd(const char *path, const int32_t *buf, size_t sample
         return;
     }
 
-    UINT bw;
-    UINT size = samples * sizeof(int32_t);
-    Xil_DCacheInvalidateRange((UINTPTR)buf, size);
-    fr = f_write(&fil, buf, size, &bw);
+    q31_to_pcm16(buf, gKws16kPcm16, samples);
+
+    wav_header_t header;
+    fill_wav_header(&header, sample_rate, (uint32_t)samples);
+
+    UINT bw = 0U;
+    Xil_DCacheFlushRange((UINTPTR)&header, sizeof(header));
+    fr = f_write(&fil, &header, sizeof(header), &bw);
+    if (fr != FR_OK || bw != sizeof(header)) {
+        xil_printf("[SD] Write header failed (%d, %lu)\r\n", fr, (unsigned long)bw);
+        f_close(&fil);
+        return;
+    }
+
+    UINT data_bytes = samples * sizeof(int16_t);
+    Xil_DCacheFlushRange((UINTPTR)gKws16kPcm16, data_bytes);
+    fr = f_write(&fil, gKws16kPcm16, data_bytes, &bw);
+    if (fr != FR_OK || bw != data_bytes) {
+        xil_printf("[SD] Write payload failed (%d, %lu/%u)\r\n", fr, (unsigned long)bw, data_bytes);
+    }
     f_close(&fil);
 
-    xil_printf("[SD] %s (%lu bytes, fr=%d)\r\n", path, (unsigned long)bw, fr);
+    xil_printf("[SD] %s saved\r\n", path);
 }
 /* ================================================================ */
 /*                       主程序入口                                 */
@@ -912,12 +983,14 @@ int main(void)
             unpack_i2s_frames_to_q31_le_safe(dma_bytes,total_frames,gMicMono96k);
 
             downsample_6x_avg(gMicMono96k+START_OFFSET_FRAMES,gKws16k,SEGMENT_FRAMES);
-            save_int32_to_sd("0:/record_16k.raw",gKws16k,NR_KWS_SAMPLES);
+            save_kws_audio_to_sd("0:/record_16k.wav", gKws16k, NR_KWS_SAMPLES, KWS_TARGET_SR);
 
-            /* 自动播放 */
+            /* 自动播放：与 KWS 输入同一时间段 */
             upsample_6x_for_playback(gKws16k,gPlayback96k,NR_KWS_SAMPLES);
+            UINTPTR playback_base = (UINTPTR)MEM_BASE_ADDR +
+                                   (UINTPTR)START_OFFSET_FRAMES * I2S_BYTES_PER_FRAME;
             fnSetHpOutput(); usleep(100000);
-            fnAudioPlay(sAxiDma,SEGMENT_FRAMES);
+            fnAudioPlay(sAxiDma, playback_base, SEGMENT_FRAMES);
 
             /* KWS 推理 */
             u32 cls=0; float conf=0.0f;
@@ -949,7 +1022,7 @@ int main(void)
             } else if(Demo.chBtn=='d' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
                 xil_printf("Start Playback...\r\n");
                 fnSetHpOutput(); usleep(100000);
-                fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
+                fnAudioPlay(sAxiDma,(UINTPTR)MEM_BASE_ADDR,NR_AUDIO_SAMPLES);
                 Demo.fAudioPlayback=1;
             }
             Demo.fUserIOEvent=0; Demo.chBtn=0;
