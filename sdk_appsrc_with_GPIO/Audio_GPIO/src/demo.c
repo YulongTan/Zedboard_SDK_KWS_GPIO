@@ -919,7 +919,16 @@ static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t sa
         return;
     }
 
-    fr = f_open(&fil, path, FA_CREATE_ALWAYS | FA_WRITE);
+    const char *open_path = path;
+    fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+    if (fr == FR_INVALID_NAME) {
+        static const char fallback_path[] = "0:/REC16K.WAV";
+        xil_printf("[SD] Invalid filename '%s', falling back to %s\r\n",
+                   path, fallback_path);
+        open_path = fallback_path;
+        fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+    }
+
     if (fr != FR_OK) {
         xil_printf("[SD] Open file failed (%d)\r\n", fr);
         return;
@@ -947,7 +956,7 @@ static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t sa
     }
     f_close(&fil);
 
-    xil_printf("[SD] %s saved\r\n", path);
+    xil_printf("[SD] %s saved\r\n", open_path);
 }
 /* ================================================================ */
 /*                       主程序入口                                 */
