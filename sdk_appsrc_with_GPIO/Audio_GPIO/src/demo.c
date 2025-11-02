@@ -800,18 +800,47 @@ static int32_t sign_extend_20bit(uint32_t v)
     return (int32_t)v;
 }
 
-/* I2S 解包：5 Bytes → 单声道Q31样本 */
-static void decode_i2s_frame(const uint8_t *src, int reversed,
-                             int32_t *left_q31, int32_t *right_q31)
+static uint8_t get_stream_byte(const uint8_t *src,
+                               size_t total_bytes,
+                               size_t byte_index,
+                               int reversed)
 {
-    uint32_t B0, B1, B2, B3, B4;
     if (!reversed) {
-        B0 = src[0]; B1 = src[1]; B2 = src[2];
-        B3 = src[3]; B4 = src[4];
-    } else {
-        B4 = src[0]; B3 = src[1]; B2 = src[2];
-        B1 = src[3]; B0 = src[4];
+        if (byte_index < total_bytes) {
+            return src[byte_index];
+        }
+        return 0U;
     }
+
+    size_t word_index = byte_index / 4U;
+    size_t base = word_index * 4U;
+    uint8_t reordered[4] = {0U, 0U, 0U, 0U};
+
+    if (base < total_bytes) {
+        size_t remaining = total_bytes - base;
+        size_t copy = (remaining < 4U) ? remaining : 4U;
+        for (size_t i = 0U; i < copy; ++i) {
+            reordered[3U - i] = src[base + i];
+        }
+    }
+
+    return reordered[byte_index % 4U];
+}
+
+/* I2S 解包：5 Bytes → 单声道Q31样本 */
+static void decode_i2s_frame(const uint8_t *src,
+                             size_t total_bytes,
+                             size_t frame_idx,
+                             int reversed,
+                             int32_t *left_q31,
+                             int32_t *right_q31)
+{
+    size_t byte_base = frame_idx * I2S_BYTES_PER_FRAME;
+    uint32_t B0 = get_stream_byte(src, total_bytes, byte_base + 0U, reversed);
+    uint32_t B1 = get_stream_byte(src, total_bytes, byte_base + 1U, reversed);
+    uint32_t B2 = get_stream_byte(src, total_bytes, byte_base + 2U, reversed);
+    uint32_t B3 = get_stream_byte(src, total_bytes, byte_base + 3U, reversed);
+    uint32_t B4 = get_stream_byte(src, total_bytes, byte_base + 4U, reversed);
 
     uint32_t left_u  = (B0 << 12) | (B1 << 4) | (B2 >> 4);
     uint32_t right_u = ((B2 & 0x0F) << 16) | (B3 << 8) | B4;
@@ -831,14 +860,14 @@ static int detect_dma_byte_reversal(const uint8_t *src, size_t frames)
     int32_t prev_normal = 0;
     int32_t prev_reversed = 0;
     int first = 1;
+    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
 
     for (size_t i = 0; i < check_frames; ++i) {
-        const uint8_t *frame = src + i * I2S_BYTES_PER_FRAME;
         int32_t left_normal, right_normal;
         int32_t left_reversed, right_reversed;
 
-        decode_i2s_frame(frame, 0, &left_normal, &right_normal);
-        decode_i2s_frame(frame, 1, &left_reversed, &right_reversed);
+        decode_i2s_frame(src, total_bytes, i, 0, &left_normal, &right_normal);
+        decode_i2s_frame(src, total_bytes, i, 1, &left_reversed, &right_reversed);
 
         int32_t mono_normal = (left_normal + right_normal) >> 1;
         int32_t mono_reversed = (left_reversed + right_reversed) >> 1;
@@ -868,9 +897,11 @@ static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, 
                reversed ? "little-endian (DMA reversed)"
                         : "big-endian (standard)");
 
+    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
+
     for (size_t i = 0; i < frames; ++i) {
         int32_t left, right;
-        decode_i2s_frame(src + i * I2S_BYTES_PER_FRAME, reversed, &left, &right);
+        decode_i2s_frame(src, total_bytes, i, reversed, &left, &right);
         dst[i] = (left + right) >> 1;
     }
 }
