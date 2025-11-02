@@ -1,0 +1,12 @@
+/* C:/Users/lenovo/AppData/Local/Temp/bootgen_Audio_GPIO_system13901021148282199856/sd_card_temp/boot.bif */
+/* Command to create bitstream .bin file:       */
+/*   bootgen -image <bif_file> -split bin -w    */
+/* Command to create BOOT.BIN file:             */
+/*   bootgen  -image <bif_file> -w -o i BOOT.BIN */
+/*Audio_with_GPIO*/
+the_ROM_image:
+{
+ [bootloader] D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/sw/Audio_with_GPIO/boot/fsbl.elf
+ D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+ D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+}

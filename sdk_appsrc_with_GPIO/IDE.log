@@ -578,3 +578,2300 @@ con
 16:35:56 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
 16:36:31 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
 16:37:36 INFO  : Disconnected from the channel tcfchan#25.
+16:42:36 DEBUG : Logs will be stored at 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/IDE.log'.
+16:42:37 INFO  : Launching XSCT server: xsct.bat -n  -interactive D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\temp_xsdb_launch_script.tcl
+16:42:43 INFO  : XSCT server has started successfully.
+16:42:43 INFO  : plnx-install-location is set to ''
+16:42:43 INFO  : Successfully done setting XSCT server connection channel  
+16:42:43 INFO  : Successfully done setting workspace for the tool. 
+16:42:43 INFO  : Platform repository initialization has completed.
+16:42:44 INFO  : Successfully done query RDI_DATADIR 
+16:42:44 INFO  : Registering command handlers for Vitis TCF services
+17:03:07 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+17:03:14 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+17:03:29 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+17:03:33 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+17:05:29 ERROR : (XRT Server)D:/Vitis/Vitis/2022.1/bin/unwrapped/win64.o/xrt_server.exe: error: illegal option '-'
+Usage: agent [OPTION]...
+Start Target Communication Framework agent.
+  -d               run in daemon mode (output is sent to system logger)
+  -i               run in interactive mode
+  -L<file>         enable logging, use -L- to send log to stderr
+  -l<level>        set log level, the level is comma separated list of:
+      alloc        memory allocation and deallocation (0x1)
+      eventcore    main event queue (0x2)
+      waitpid      waitpid() events (0x4)
+      events       low-level debugger events (0x8)
+      protocol     communication protocol (0x20)
+      context      debug context actions (0x40)
+      children     debug context children (0x10)
+      discovery    discovery (0x80)
+      asyncreq     async I/O (0x100)
+      proxy        proxy state (0x200)
+      tcflog       proxy traffic (0x400)
+      elf          ELF reader (0x800)
+      stack        stack trace service (0x2000)
+      plugin       plugins (0x4000)
+      shutdown     shutdown of subsystems (0x8000)
+      disasm       disassembly service (0x10000)
+  -s<url>          set agent listening port and protocol, default is tcp::0
+  -S               print server properties in Json format to stdout
+  -g<port>         start GDB Remote Serial Protocol server at the specified TCP port
+  -I<idle-seconds> exit if there are no connections for the specified time
+
+17:06:28 ERROR : Timed out. 60 seconds have elapsed while waiting for the XRT server to launch.
+17:06:31 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:06:31 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:06:31 INFO  : 'jtag frequency' command is executed.
+17:06:31 INFO  : Context for 'APU' is selected.
+17:06:31 INFO  : System reset is completed.
+17:06:34 INFO  : 'after 3000' command is executed.
+17:06:34 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:06:37 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:06:37 INFO  : Context for 'APU' is selected.
+17:06:37 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:06:37 INFO  : 'configparams force-mem-access 1' command is executed.
+17:06:37 INFO  : Context for 'APU' is selected.
+17:06:37 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:06:37 INFO  : 'ps7_init' command is executed.
+17:06:37 INFO  : 'ps7_post_config' command is executed.
+17:06:37 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:06:38 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:06:38 INFO  : 'configparams force-mem-access 0' command is executed.
+17:06:38 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:06:38 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:06:38 INFO  : 'con' command is executed.
+17:06:38 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:06:38 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+17:09:34 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+17:09:38 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+17:09:51 INFO  : Disconnected from the channel tcfchan#3.
+17:09:52 ERROR : (XRT Server)D:/Vitis/Vitis/2022.1/bin/unwrapped/win64.o/xrt_server.exe: error: illegal option '-'
+Usage: agent [OPTION]...
+Start Target Communication Framework agent.
+  -d               run in daemon mode (output is sent to system logger)
+  -i               run in interactive mode
+  -L<file>         enable logging, use -L- to send log to stderr
+  -l<level>        set log level, the level is comma separated list of:
+      alloc        memory allocation and deallocation (0x1)
+      eventcore    main event queue (0x2)
+      waitpid      waitpid() events (0x4)
+      events       low-level debugger events (0x8)
+      protocol     communication protocol (0x20)
+      context      debug context actions (0x40)
+      children     debug context children (0x10)
+      discovery    discovery (0x80)
+      asyncreq     async I/O (0x100)
+      proxy        proxy state (0x200)
+      tcflog       proxy traffic (0x400)
+      elf          ELF reader (0x800)
+      stack        stack trace service (0x2000)
+      plugin       plugins (0x4000)
+      shutdown     shutdown of subsystems (0x8000)
+      disasm       disassembly service (0x10000)
+  -s<url>          set agent listening port and protocol, default is tcp::0
+  -S               print server properties in Json format to stdout
+  -g<port>         start GDB Remote Serial Protocol server at the specified TCP port
+  -I<idle-seconds> exit if there are no connections for the specified time
+
+17:10:52 ERROR : Timed out. 60 seconds have elapsed while waiting for the XRT server to launch.
+17:10:54 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:10:54 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:10:54 INFO  : 'jtag frequency' command is executed.
+17:10:54 INFO  : Context for 'APU' is selected.
+17:10:54 INFO  : System reset is completed.
+17:10:57 INFO  : 'after 3000' command is executed.
+17:10:57 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:11:00 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:11:00 INFO  : Context for 'APU' is selected.
+17:11:02 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:11:02 INFO  : 'configparams force-mem-access 1' command is executed.
+17:11:02 INFO  : Context for 'APU' is selected.
+17:11:02 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:11:02 INFO  : 'ps7_init' command is executed.
+17:11:02 INFO  : 'ps7_post_config' command is executed.
+17:11:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:11:03 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:11:03 INFO  : 'configparams force-mem-access 0' command is executed.
+17:11:03 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:11:03 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:11:03 INFO  : 'con' command is executed.
+17:11:03 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:11:03 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+17:34:49 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+17:34:54 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+17:36:18 INFO  : Disconnected from the channel tcfchan#5.
+17:36:19 ERROR : (XRT Server)D:/Vitis/Vitis/2022.1/bin/unwrapped/win64.o/xrt_server.exe: error: illegal option '-'
+Usage: agent [OPTION]...
+Start Target Communication Framework agent.
+  -d               run in daemon mode (output is sent to system logger)
+  -i               run in interactive mode
+  -L<file>         enable logging, use -L- to send log to stderr
+  -l<level>        set log level, the level is comma separated list of:
+      alloc        memory allocation and deallocation (0x1)
+      eventcore    main event queue (0x2)
+      waitpid      waitpid() events (0x4)
+      events       low-level debugger events (0x8)
+      protocol     communication protocol (0x20)
+      context      debug context actions (0x40)
+      children     debug context children (0x10)
+      discovery    discovery (0x80)
+      asyncreq     async I/O (0x100)
+      proxy        proxy state (0x200)
+      tcflog       proxy traffic (0x400)
+      elf          ELF reader (0x800)
+      stack        stack trace service (0x2000)
+      plugin       plugins (0x4000)
+      shutdown     shutdown of subsystems (0x8000)
+      disasm       disassembly service (0x10000)
+  -s<url>          set agent listening port and protocol, default is tcp::0
+  -S               print server properties in Json format to stdout
+  -g<port>         start GDB Remote Serial Protocol server at the specified TCP port
+  -I<idle-seconds> exit if there are no connections for the specified time
+
+17:37:19 ERROR : Timed out. 60 seconds have elapsed while waiting for the XRT server to launch.
+17:37:21 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:37:21 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:37:21 INFO  : 'jtag frequency' command is executed.
+17:37:21 INFO  : Context for 'APU' is selected.
+17:37:21 INFO  : System reset is completed.
+17:37:24 INFO  : 'after 3000' command is executed.
+17:37:24 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:37:27 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:37:27 INFO  : Context for 'APU' is selected.
+17:37:29 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:37:29 INFO  : 'configparams force-mem-access 1' command is executed.
+17:37:29 INFO  : Context for 'APU' is selected.
+17:37:29 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:37:29 INFO  : 'ps7_init' command is executed.
+17:37:29 INFO  : 'ps7_post_config' command is executed.
+17:37:29 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:37:30 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:37:30 INFO  : 'configparams force-mem-access 0' command is executed.
+17:37:30 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:37:30 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:37:30 INFO  : 'con' command is executed.
+17:37:30 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:37:30 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+17:38:50 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+17:38:54 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+17:39:05 INFO  : Disconnected from the channel tcfchan#7.
+17:39:05 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:39:05 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:39:05 INFO  : 'jtag frequency' command is executed.
+17:39:05 INFO  : Context for 'APU' is selected.
+17:39:05 INFO  : System reset is completed.
+17:39:08 INFO  : 'after 3000' command is executed.
+17:39:08 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:39:11 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:39:11 INFO  : Context for 'APU' is selected.
+17:39:13 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:39:13 INFO  : 'configparams force-mem-access 1' command is executed.
+17:39:13 INFO  : Context for 'APU' is selected.
+17:39:13 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:39:13 INFO  : 'ps7_init' command is executed.
+17:39:13 INFO  : 'ps7_post_config' command is executed.
+17:39:13 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:39:13 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:39:13 INFO  : 'configparams force-mem-access 0' command is executed.
+17:39:13 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:39:13 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:39:13 INFO  : 'con' command is executed.
+17:39:13 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:39:13 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+17:45:29 INFO  : Disconnected from the channel tcfchan#9.
+17:45:29 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:45:29 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:45:29 INFO  : 'jtag frequency' command is executed.
+17:45:29 INFO  : Context for 'APU' is selected.
+17:45:30 INFO  : System reset is completed.
+17:45:33 INFO  : 'after 3000' command is executed.
+17:45:33 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:45:35 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:45:35 INFO  : Context for 'APU' is selected.
+17:45:37 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:45:37 INFO  : 'configparams force-mem-access 1' command is executed.
+17:45:37 INFO  : Context for 'APU' is selected.
+17:45:37 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:45:38 INFO  : 'ps7_init' command is executed.
+17:45:38 INFO  : 'ps7_post_config' command is executed.
+17:45:38 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:45:38 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:45:38 INFO  : 'configparams force-mem-access 0' command is executed.
+17:45:38 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:45:38 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:45:38 INFO  : 'con' command is executed.
+17:45:38 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:45:38 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+17:46:32 INFO  : Disconnected from the channel tcfchan#10.
+17:46:32 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+17:46:32 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+17:46:32 INFO  : 'jtag frequency' command is executed.
+17:46:32 INFO  : Context for 'APU' is selected.
+17:46:33 INFO  : System reset is completed.
+17:46:36 INFO  : 'after 3000' command is executed.
+17:46:36 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+17:46:38 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+17:46:38 INFO  : Context for 'APU' is selected.
+17:46:40 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+17:46:40 INFO  : 'configparams force-mem-access 1' command is executed.
+17:46:40 INFO  : Context for 'APU' is selected.
+17:46:40 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+17:46:41 INFO  : 'ps7_init' command is executed.
+17:46:41 INFO  : 'ps7_post_config' command is executed.
+17:46:41 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:46:41 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+17:46:41 INFO  : 'configparams force-mem-access 0' command is executed.
+17:46:41 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+17:46:41 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+17:46:41 INFO  : 'con' command is executed.
+17:46:41 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+17:46:41 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+19:58:54 INFO  : Disconnected from the channel tcfchan#11.
+20:10:12 DEBUG : Logs will be stored at 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/IDE.log'.
+20:10:12 INFO  : Launching XSCT server: xsct.bat -n  -interactive D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\temp_xsdb_launch_script.tcl
+20:10:16 INFO  : XSCT server has started successfully.
+20:10:16 INFO  : Successfully done setting XSCT server connection channel  
+20:10:16 INFO  : plnx-install-location is set to ''
+20:10:16 INFO  : Successfully done setting workspace for the tool. 
+20:10:17 INFO  : Platform repository initialization has completed.
+20:10:17 INFO  : Registering command handlers for Vitis TCF services
+20:10:17 INFO  : Successfully done query RDI_DATADIR 
+20:17:52 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+20:17:59 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+20:18:12 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+20:18:13 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+20:18:13 INFO  : 'jtag frequency' command is executed.
+20:18:13 INFO  : Context for 'APU' is selected.
+20:18:13 INFO  : System reset is completed.
+20:18:16 INFO  : 'after 3000' command is executed.
+20:18:16 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+20:18:18 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+20:18:18 INFO  : Context for 'APU' is selected.
+20:18:18 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+20:18:18 INFO  : 'configparams force-mem-access 1' command is executed.
+20:18:18 INFO  : Context for 'APU' is selected.
+20:18:18 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+20:18:19 INFO  : 'ps7_init' command is executed.
+20:18:19 INFO  : 'ps7_post_config' command is executed.
+20:18:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+20:18:19 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+20:18:19 INFO  : 'configparams force-mem-access 0' command is executed.
+20:18:19 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+20:18:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+20:18:19 INFO  : 'con' command is executed.
+20:18:19 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+20:18:19 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+20:25:48 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+20:25:52 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+20:26:03 INFO  : Disconnected from the channel tcfchan#2.
+20:26:03 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+20:26:03 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+20:26:03 INFO  : 'jtag frequency' command is executed.
+20:26:03 INFO  : Context for 'APU' is selected.
+20:26:03 INFO  : System reset is completed.
+20:26:06 INFO  : 'after 3000' command is executed.
+20:26:06 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+20:26:09 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+20:26:09 INFO  : Context for 'APU' is selected.
+20:26:11 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+20:26:11 INFO  : 'configparams force-mem-access 1' command is executed.
+20:26:11 INFO  : Context for 'APU' is selected.
+20:26:11 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+20:26:11 INFO  : 'ps7_init' command is executed.
+20:26:11 INFO  : 'ps7_post_config' command is executed.
+20:26:11 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+20:26:11 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+20:26:11 INFO  : 'configparams force-mem-access 0' command is executed.
+20:26:11 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+20:26:11 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+20:26:11 INFO  : 'con' command is executed.
+20:26:11 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+20:26:11 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+21:09:18 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:09:50 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:16:05 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:16:57 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:22:41 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:22:46 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+21:23:10 INFO  : Disconnected from the channel tcfchan#4.
+21:23:10 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:23:10 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+21:23:10 INFO  : 'jtag frequency' command is executed.
+21:23:10 INFO  : Context for 'APU' is selected.
+21:23:10 INFO  : System reset is completed.
+21:23:13 INFO  : 'after 3000' command is executed.
+21:23:13 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+21:23:16 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+21:23:16 INFO  : Context for 'APU' is selected.
+21:23:18 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+21:23:18 INFO  : 'configparams force-mem-access 1' command is executed.
+21:23:18 INFO  : Context for 'APU' is selected.
+21:23:18 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+21:23:18 INFO  : 'ps7_init' command is executed.
+21:23:18 INFO  : 'ps7_post_config' command is executed.
+21:23:18 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:23:19 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+21:23:19 INFO  : 'configparams force-mem-access 0' command is executed.
+21:23:19 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:23:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:23:19 INFO  : 'con' command is executed.
+21:23:19 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+21:23:19 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+21:23:55 INFO  : Disconnected from the channel tcfchan#6.
+21:23:55 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:23:55 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+21:23:55 INFO  : 'jtag frequency' command is executed.
+21:23:55 INFO  : Context for 'APU' is selected.
+21:23:55 INFO  : System reset is completed.
+21:23:58 INFO  : 'after 3000' command is executed.
+21:23:59 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+21:24:01 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+21:24:01 INFO  : Context for 'APU' is selected.
+21:24:03 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+21:24:03 INFO  : 'configparams force-mem-access 1' command is executed.
+21:24:03 INFO  : Context for 'APU' is selected.
+21:24:03 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+21:24:03 INFO  : 'ps7_init' command is executed.
+21:24:03 INFO  : 'ps7_post_config' command is executed.
+21:24:03 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:24:04 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+21:24:04 INFO  : 'configparams force-mem-access 0' command is executed.
+21:24:04 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:24:04 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:24:04 INFO  : 'con' command is executed.
+21:24:04 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+21:24:04 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+21:25:34 INFO  : Disconnected from the channel tcfchan#7.
+21:25:34 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+21:25:34 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+21:25:34 INFO  : 'jtag frequency' command is executed.
+21:25:34 INFO  : Context for 'APU' is selected.
+21:25:35 INFO  : System reset is completed.
+21:25:38 INFO  : 'after 3000' command is executed.
+21:25:38 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+21:25:40 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+21:25:40 INFO  : Context for 'APU' is selected.
+21:25:43 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+21:25:43 INFO  : 'configparams force-mem-access 1' command is executed.
+21:25:43 INFO  : Context for 'APU' is selected.
+21:25:43 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+21:25:43 INFO  : 'ps7_init' command is executed.
+21:25:43 INFO  : 'ps7_post_config' command is executed.
+21:25:43 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:25:43 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+21:25:43 INFO  : 'configparams force-mem-access 0' command is executed.
+21:25:43 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+21:25:43 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+21:25:43 INFO  : 'con' command is executed.
+21:25:43 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+21:25:43 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+21:40:26 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+21:40:32 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+21:40:53 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+21:40:53 INFO  : Generated template bif file for Audio_GPIO_system
+21:41:23 INFO  : Invoking Bootgen: bootgen -image Audio_GPIO_system.bif -arch zynq -o D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/_ide/bootimage/BOOT.bin
+21:41:25 INFO  : Bootgen command execution is done.
+23:57:12 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+23:58:23 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+23:58:28 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+23:58:42 INFO  : Disconnected from the channel tcfchan#8.
+23:58:43 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:58:44 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+23:58:44 INFO  : 'jtag frequency' command is executed.
+23:58:44 INFO  : Context for 'APU' is selected.
+23:58:44 INFO  : System reset is completed.
+23:58:47 INFO  : 'after 3000' command is executed.
+23:58:47 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+23:58:49 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+23:58:49 INFO  : Context for 'APU' is selected.
+23:58:52 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+23:58:53 INFO  : 'configparams force-mem-access 1' command is executed.
+23:58:53 INFO  : Context for 'APU' is selected.
+23:58:53 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+23:58:53 INFO  : 'ps7_init' command is executed.
+23:58:53 INFO  : 'ps7_post_config' command is executed.
+23:58:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+23:58:53 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+23:58:53 INFO  : 'configparams force-mem-access 0' command is executed.
+23:58:53 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+23:58:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+23:58:53 INFO  : 'con' command is executed.
+23:58:53 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+23:58:53 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+23:59:24 INFO  : Disconnected from the channel tcfchan#11.
+23:59:24 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+23:59:24 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+23:59:24 INFO  : 'jtag frequency' command is executed.
+23:59:24 INFO  : Context for 'APU' is selected.
+23:59:24 INFO  : System reset is completed.
+23:59:27 INFO  : 'after 3000' command is executed.
+23:59:27 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+23:59:30 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+23:59:30 INFO  : Context for 'APU' is selected.
+23:59:32 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+23:59:32 INFO  : 'configparams force-mem-access 1' command is executed.
+23:59:32 INFO  : Context for 'APU' is selected.
+23:59:32 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+23:59:33 INFO  : 'ps7_init' command is executed.
+23:59:33 INFO  : 'ps7_post_config' command is executed.
+23:59:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+23:59:33 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+23:59:33 INFO  : 'configparams force-mem-access 0' command is executed.
+23:59:33 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+23:59:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+23:59:33 INFO  : 'con' command is executed.
+23:59:33 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+23:59:33 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:11:01 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:16:22 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:17:16 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:17:20 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:17:36 INFO  : Disconnected from the channel tcfchan#12.
+00:17:36 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:17:37 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:17:37 INFO  : 'jtag frequency' command is executed.
+00:17:37 INFO  : Context for 'APU' is selected.
+00:17:37 INFO  : System reset is completed.
+00:17:40 INFO  : 'after 3000' command is executed.
+00:17:40 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:17:42 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:17:42 INFO  : Context for 'APU' is selected.
+00:17:45 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:17:45 INFO  : 'configparams force-mem-access 1' command is executed.
+00:17:45 INFO  : Context for 'APU' is selected.
+00:17:45 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:17:45 INFO  : 'ps7_init' command is executed.
+00:17:45 INFO  : 'ps7_post_config' command is executed.
+00:17:45 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:17:45 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:17:45 INFO  : 'configparams force-mem-access 0' command is executed.
+00:17:45 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:17:45 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:17:45 INFO  : 'con' command is executed.
+00:17:45 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:17:45 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:29:09 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:30:52 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:31:07 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:35:31 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:39:26 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:39:31 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:39:57 INFO  : Disconnected from the channel tcfchan#14.
+00:39:57 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:39:57 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:39:57 INFO  : 'jtag frequency' command is executed.
+00:39:57 INFO  : Context for 'APU' is selected.
+00:39:57 INFO  : System reset is completed.
+00:40:00 INFO  : 'after 3000' command is executed.
+00:40:00 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:40:03 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:40:03 INFO  : Context for 'APU' is selected.
+00:40:05 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:40:05 INFO  : 'configparams force-mem-access 1' command is executed.
+00:40:05 INFO  : Context for 'APU' is selected.
+00:40:05 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:40:05 INFO  : 'ps7_init' command is executed.
+00:40:05 INFO  : 'ps7_post_config' command is executed.
+00:40:05 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:40:06 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:40:06 INFO  : 'configparams force-mem-access 0' command is executed.
+00:40:06 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:40:06 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:40:06 INFO  : 'con' command is executed.
+00:40:06 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:40:06 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:44:01 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:44:05 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:44:14 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:44:17 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:44:25 INFO  : Disconnected from the channel tcfchan#16.
+00:44:25 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:44:25 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:44:25 INFO  : 'jtag frequency' command is executed.
+00:44:25 INFO  : Context for 'APU' is selected.
+00:44:25 INFO  : System reset is completed.
+00:44:28 INFO  : 'after 3000' command is executed.
+00:44:28 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:44:31 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:44:31 INFO  : Context for 'APU' is selected.
+00:44:33 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:44:33 INFO  : 'configparams force-mem-access 1' command is executed.
+00:44:33 INFO  : Context for 'APU' is selected.
+00:44:33 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:44:33 INFO  : 'ps7_init' command is executed.
+00:44:33 INFO  : 'ps7_post_config' command is executed.
+00:44:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:44:34 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:44:34 INFO  : 'configparams force-mem-access 0' command is executed.
+00:44:34 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:44:34 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:44:34 INFO  : 'con' command is executed.
+00:44:34 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:44:34 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:48:23 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:48:28 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:48:37 INFO  : Disconnected from the channel tcfchan#19.
+00:48:37 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:48:37 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:48:37 INFO  : 'jtag frequency' command is executed.
+00:48:37 INFO  : Context for 'APU' is selected.
+00:48:37 INFO  : System reset is completed.
+00:48:40 INFO  : 'after 3000' command is executed.
+00:48:40 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:48:43 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:48:43 INFO  : Context for 'APU' is selected.
+00:48:45 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:48:45 INFO  : 'configparams force-mem-access 1' command is executed.
+00:48:45 INFO  : Context for 'APU' is selected.
+00:48:45 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:48:45 INFO  : 'ps7_init' command is executed.
+00:48:45 INFO  : 'ps7_post_config' command is executed.
+00:48:45 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:48:46 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:48:46 INFO  : 'configparams force-mem-access 0' command is executed.
+00:48:46 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:48:46 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:48:46 INFO  : 'con' command is executed.
+00:48:46 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:48:46 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:49:51 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:49:55 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:50:06 INFO  : Disconnected from the channel tcfchan#21.
+00:50:06 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:50:06 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:50:06 INFO  : 'jtag frequency' command is executed.
+00:50:06 INFO  : Context for 'APU' is selected.
+00:50:06 INFO  : System reset is completed.
+00:50:09 INFO  : 'after 3000' command is executed.
+00:50:10 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:50:12 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:50:12 INFO  : Context for 'APU' is selected.
+00:50:14 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:50:14 INFO  : 'configparams force-mem-access 1' command is executed.
+00:50:14 INFO  : Context for 'APU' is selected.
+00:50:14 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:50:14 INFO  : 'ps7_init' command is executed.
+00:50:15 INFO  : 'ps7_post_config' command is executed.
+00:50:15 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:50:15 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:50:15 INFO  : 'configparams force-mem-access 0' command is executed.
+00:50:15 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:50:15 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:50:15 INFO  : 'con' command is executed.
+00:50:15 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:50:15 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:52:13 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:52:17 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:52:24 INFO  : Disconnected from the channel tcfchan#23.
+00:52:24 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:52:24 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:52:24 INFO  : 'jtag frequency' command is executed.
+00:52:24 INFO  : Context for 'APU' is selected.
+00:52:24 INFO  : System reset is completed.
+00:52:27 INFO  : 'after 3000' command is executed.
+00:52:27 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:52:30 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:52:30 INFO  : Context for 'APU' is selected.
+00:52:32 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:52:32 INFO  : 'configparams force-mem-access 1' command is executed.
+00:52:32 INFO  : Context for 'APU' is selected.
+00:52:32 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:52:32 INFO  : 'ps7_init' command is executed.
+00:52:32 INFO  : 'ps7_post_config' command is executed.
+00:52:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:52:32 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:52:32 INFO  : 'configparams force-mem-access 0' command is executed.
+00:52:32 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:52:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:52:32 INFO  : 'con' command is executed.
+00:52:32 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:52:32 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:53:56 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:54:00 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:54:07 INFO  : Disconnected from the channel tcfchan#25.
+00:54:08 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:54:08 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:54:08 INFO  : 'jtag frequency' command is executed.
+00:54:08 INFO  : Context for 'APU' is selected.
+00:54:08 INFO  : System reset is completed.
+00:54:11 INFO  : 'after 3000' command is executed.
+00:54:11 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:54:13 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:54:13 INFO  : Context for 'APU' is selected.
+00:54:16 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:54:16 INFO  : 'configparams force-mem-access 1' command is executed.
+00:54:16 INFO  : Context for 'APU' is selected.
+00:54:16 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:54:16 INFO  : 'ps7_init' command is executed.
+00:54:16 INFO  : 'ps7_post_config' command is executed.
+00:54:16 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:54:16 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:54:16 INFO  : 'configparams force-mem-access 0' command is executed.
+00:54:16 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:54:16 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:54:16 INFO  : 'con' command is executed.
+00:54:16 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:54:16 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+00:57:23 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+00:57:27 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+00:58:10 INFO  : Disconnected from the channel tcfchan#27.
+00:58:10 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+00:58:10 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+00:58:10 INFO  : 'jtag frequency' command is executed.
+00:58:10 INFO  : Context for 'APU' is selected.
+00:58:10 INFO  : System reset is completed.
+00:58:13 INFO  : 'after 3000' command is executed.
+00:58:13 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+00:58:15 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+00:58:15 INFO  : Context for 'APU' is selected.
+00:58:18 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+00:58:18 INFO  : 'configparams force-mem-access 1' command is executed.
+00:58:18 INFO  : Context for 'APU' is selected.
+00:58:18 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+00:58:18 INFO  : 'ps7_init' command is executed.
+00:58:18 INFO  : 'ps7_post_config' command is executed.
+00:58:18 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:58:18 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+00:58:18 INFO  : 'configparams force-mem-access 0' command is executed.
+00:58:18 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+00:58:18 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+00:58:18 INFO  : 'con' command is executed.
+00:58:18 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+00:58:18 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:04:42 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:09:51 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:09:56 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:10:10 INFO  : Disconnected from the channel tcfchan#29.
+01:10:10 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:10:10 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:10:10 INFO  : 'jtag frequency' command is executed.
+01:10:10 INFO  : Context for 'APU' is selected.
+01:10:10 INFO  : System reset is completed.
+01:10:13 INFO  : 'after 3000' command is executed.
+01:10:13 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:10:15 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:10:15 INFO  : Context for 'APU' is selected.
+01:10:18 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:10:18 INFO  : 'configparams force-mem-access 1' command is executed.
+01:10:18 INFO  : Context for 'APU' is selected.
+01:10:18 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:10:18 INFO  : 'ps7_init' command is executed.
+01:10:18 INFO  : 'ps7_post_config' command is executed.
+01:10:18 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:10:18 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:10:18 INFO  : 'configparams force-mem-access 0' command is executed.
+01:10:18 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:10:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:10:19 INFO  : 'con' command is executed.
+01:10:19 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:10:19 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:19:41 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:23:14 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:23:32 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:24:45 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:26:03 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:27:22 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:27:26 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:27:37 INFO  : Disconnected from the channel tcfchan#31.
+01:27:37 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:27:38 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:27:38 INFO  : 'jtag frequency' command is executed.
+01:27:38 INFO  : Context for 'APU' is selected.
+01:27:38 INFO  : System reset is completed.
+01:27:41 INFO  : 'after 3000' command is executed.
+01:27:41 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:27:43 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:27:43 INFO  : Context for 'APU' is selected.
+01:27:45 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:27:45 INFO  : 'configparams force-mem-access 1' command is executed.
+01:27:45 INFO  : Context for 'APU' is selected.
+01:27:45 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:27:46 INFO  : 'ps7_init' command is executed.
+01:27:46 INFO  : 'ps7_post_config' command is executed.
+01:27:46 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:27:46 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:27:46 INFO  : 'configparams force-mem-access 0' command is executed.
+01:27:46 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:27:46 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:27:46 INFO  : 'con' command is executed.
+01:27:46 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:27:46 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:37:55 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:38:16 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:41:35 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:41:40 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:41:47 INFO  : Disconnected from the channel tcfchan#33.
+01:41:47 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:41:47 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:41:47 INFO  : 'jtag frequency' command is executed.
+01:41:47 INFO  : Context for 'APU' is selected.
+01:41:47 INFO  : System reset is completed.
+01:41:50 INFO  : 'after 3000' command is executed.
+01:41:51 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:41:53 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:41:53 INFO  : Context for 'APU' is selected.
+01:41:55 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:41:55 INFO  : 'configparams force-mem-access 1' command is executed.
+01:41:55 INFO  : Context for 'APU' is selected.
+01:41:55 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:41:56 INFO  : 'ps7_init' command is executed.
+01:41:56 INFO  : 'ps7_post_config' command is executed.
+01:41:56 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:41:56 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:41:56 INFO  : 'configparams force-mem-access 0' command is executed.
+01:41:56 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:41:56 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:41:56 INFO  : 'con' command is executed.
+01:41:56 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:41:56 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:47:31 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:47:36 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:47:49 INFO  : Disconnected from the channel tcfchan#35.
+01:47:49 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:47:49 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:47:49 INFO  : 'jtag frequency' command is executed.
+01:47:49 INFO  : Context for 'APU' is selected.
+01:47:49 INFO  : System reset is completed.
+01:47:52 INFO  : 'after 3000' command is executed.
+01:47:52 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:47:54 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:47:54 INFO  : Context for 'APU' is selected.
+01:47:57 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:47:57 INFO  : 'configparams force-mem-access 1' command is executed.
+01:47:57 INFO  : Context for 'APU' is selected.
+01:47:57 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:47:57 INFO  : 'ps7_init' command is executed.
+01:47:57 INFO  : 'ps7_post_config' command is executed.
+01:47:57 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:47:57 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:47:57 INFO  : 'configparams force-mem-access 0' command is executed.
+01:47:57 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:47:57 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:47:57 INFO  : 'con' command is executed.
+01:47:57 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:47:57 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:55:41 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:55:45 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:55:59 INFO  : Disconnected from the channel tcfchan#37.
+01:55:59 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:55:59 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:55:59 INFO  : 'jtag frequency' command is executed.
+01:55:59 INFO  : Context for 'APU' is selected.
+01:55:59 INFO  : System reset is completed.
+01:56:02 INFO  : 'after 3000' command is executed.
+01:56:02 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:56:05 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:56:05 INFO  : Context for 'APU' is selected.
+01:56:07 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:56:07 INFO  : 'configparams force-mem-access 1' command is executed.
+01:56:07 INFO  : Context for 'APU' is selected.
+01:56:07 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:56:07 INFO  : 'ps7_init' command is executed.
+01:56:07 INFO  : 'ps7_post_config' command is executed.
+01:56:07 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:56:08 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:56:08 INFO  : 'configparams force-mem-access 0' command is executed.
+01:56:08 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:56:08 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:56:08 INFO  : 'con' command is executed.
+01:56:08 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:56:08 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+01:58:22 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+01:58:27 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+01:58:34 INFO  : Disconnected from the channel tcfchan#39.
+01:58:34 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+01:58:34 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+01:58:34 INFO  : 'jtag frequency' command is executed.
+01:58:34 INFO  : Context for 'APU' is selected.
+01:58:34 INFO  : System reset is completed.
+01:58:37 INFO  : 'after 3000' command is executed.
+01:58:37 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+01:58:40 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+01:58:40 INFO  : Context for 'APU' is selected.
+01:58:42 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+01:58:42 INFO  : 'configparams force-mem-access 1' command is executed.
+01:58:42 INFO  : Context for 'APU' is selected.
+01:58:42 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+01:58:42 INFO  : 'ps7_init' command is executed.
+01:58:42 INFO  : 'ps7_post_config' command is executed.
+01:58:42 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:58:42 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+01:58:42 INFO  : 'configparams force-mem-access 0' command is executed.
+01:58:42 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+01:58:43 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+01:58:43 INFO  : 'con' command is executed.
+01:58:43 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+01:58:43 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+02:27:12 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+02:27:17 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+02:27:34 INFO  : Disconnected from the channel tcfchan#41.
+02:27:34 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+02:27:35 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+02:27:35 INFO  : 'jtag frequency' command is executed.
+02:27:35 INFO  : Context for 'APU' is selected.
+02:27:35 INFO  : System reset is completed.
+02:27:38 INFO  : 'after 3000' command is executed.
+02:27:38 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+02:27:40 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+02:27:40 INFO  : Context for 'APU' is selected.
+02:27:43 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+02:27:43 INFO  : 'configparams force-mem-access 1' command is executed.
+02:27:43 INFO  : Context for 'APU' is selected.
+02:27:43 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+02:27:43 INFO  : 'ps7_init' command is executed.
+02:27:43 INFO  : 'ps7_post_config' command is executed.
+02:27:43 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+02:27:43 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+02:27:43 INFO  : 'configparams force-mem-access 0' command is executed.
+02:27:43 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+02:27:43 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+02:27:43 INFO  : 'con' command is executed.
+02:27:43 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+02:27:43 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+02:43:53 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:12:59 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:13:05 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:13:14 INFO  : Disconnected from the channel tcfchan#43.
+03:13:14 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:13:32 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+----------------End of Script----------------
+
+03:13:32 ERROR : Could not find ARM device on the board for connection 'Local'.
+Check if the target is in:
+1. Split JTAG - No operations are possible with ARM DAP.
+2. Non JTAG bootmode - Bootrom may need time to enable DAP.
+Please try again.
+
+
+Troubleshooting hints:
+1. Check whether board is connected to system properly.
+2. In case of zynq board, check whether Digilent/Xilinx cable switch settings are correct.
+3. If you are using Xilinx Platform Cable USB, ensure that status LED is green.
+03:13:44 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:13:44 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:13:44 INFO  : 'jtag frequency' command is executed.
+03:13:44 INFO  : Context for 'APU' is selected.
+03:13:44 INFO  : System reset is completed.
+03:13:47 INFO  : 'after 3000' command is executed.
+03:13:47 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:13:49 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:13:49 INFO  : Context for 'APU' is selected.
+03:13:52 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:13:52 INFO  : 'configparams force-mem-access 1' command is executed.
+03:13:52 INFO  : Context for 'APU' is selected.
+03:13:52 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:13:52 INFO  : 'ps7_init' command is executed.
+03:13:52 INFO  : 'ps7_post_config' command is executed.
+03:13:52 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:13:53 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:13:53 INFO  : 'configparams force-mem-access 0' command is executed.
+03:13:53 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:13:53 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:13:53 INFO  : 'con' command is executed.
+03:13:53 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:13:53 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:15:05 INFO  : Disconnected from the channel tcfchan#45.
+03:15:05 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:15:05 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:15:05 INFO  : 'jtag frequency' command is executed.
+03:15:05 INFO  : Context for 'APU' is selected.
+03:15:05 INFO  : System reset is completed.
+03:15:08 INFO  : 'after 3000' command is executed.
+03:15:09 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:15:11 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:15:11 INFO  : Context for 'APU' is selected.
+03:15:13 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:15:13 INFO  : 'configparams force-mem-access 1' command is executed.
+03:15:13 INFO  : Context for 'APU' is selected.
+03:15:13 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:15:14 INFO  : 'ps7_init' command is executed.
+03:15:14 INFO  : 'ps7_post_config' command is executed.
+03:15:14 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:15:14 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:15:14 INFO  : 'configparams force-mem-access 0' command is executed.
+03:15:14 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:15:14 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:15:14 INFO  : 'con' command is executed.
+03:15:14 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:15:14 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:15:53 INFO  : Disconnected from the channel tcfchan#46.
+03:15:53 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:15:53 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:15:53 INFO  : 'jtag frequency' command is executed.
+03:15:53 INFO  : Context for 'APU' is selected.
+03:15:53 INFO  : System reset is completed.
+03:15:56 INFO  : 'after 3000' command is executed.
+03:15:56 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:15:59 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:15:59 INFO  : Context for 'APU' is selected.
+03:16:01 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:16:01 INFO  : 'configparams force-mem-access 1' command is executed.
+03:16:01 INFO  : Context for 'APU' is selected.
+03:16:01 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:16:01 INFO  : 'ps7_init' command is executed.
+03:16:02 INFO  : 'ps7_post_config' command is executed.
+03:16:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:16:02 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:16:02 INFO  : 'configparams force-mem-access 0' command is executed.
+03:16:02 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:16:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:16:02 INFO  : 'con' command is executed.
+03:16:02 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:16:02 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:18:32 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:18:39 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:18:49 INFO  : Disconnected from the channel tcfchan#47.
+03:18:50 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:18:50 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:18:50 INFO  : 'jtag frequency' command is executed.
+03:18:50 INFO  : Context for 'APU' is selected.
+03:18:50 INFO  : System reset is completed.
+03:18:53 INFO  : 'after 3000' command is executed.
+03:18:53 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:18:56 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:18:56 INFO  : Context for 'APU' is selected.
+03:18:58 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:18:58 INFO  : 'configparams force-mem-access 1' command is executed.
+03:18:58 INFO  : Context for 'APU' is selected.
+03:18:58 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:18:59 INFO  : 'ps7_init' command is executed.
+03:18:59 INFO  : 'ps7_post_config' command is executed.
+03:18:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:18:59 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:18:59 INFO  : 'configparams force-mem-access 0' command is executed.
+03:18:59 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:18:59 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:18:59 INFO  : 'con' command is executed.
+03:18:59 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:18:59 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:23:59 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:24:03 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:24:10 INFO  : Disconnected from the channel tcfchan#49.
+03:24:10 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:24:10 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:24:10 INFO  : 'jtag frequency' command is executed.
+03:24:10 INFO  : Context for 'APU' is selected.
+03:24:11 INFO  : System reset is completed.
+03:24:14 INFO  : 'after 3000' command is executed.
+03:24:14 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:24:16 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:24:16 INFO  : Context for 'APU' is selected.
+03:24:18 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:24:18 INFO  : 'configparams force-mem-access 1' command is executed.
+03:24:18 INFO  : Context for 'APU' is selected.
+03:24:18 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:24:19 INFO  : 'ps7_init' command is executed.
+03:24:19 INFO  : 'ps7_post_config' command is executed.
+03:24:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:24:19 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:24:19 INFO  : 'configparams force-mem-access 0' command is executed.
+03:24:19 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:24:19 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:24:19 INFO  : 'con' command is executed.
+03:24:19 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:24:19 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:25:23 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:25:27 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:25:35 INFO  : Disconnected from the channel tcfchan#51.
+03:25:35 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:25:35 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:25:35 INFO  : 'jtag frequency' command is executed.
+03:25:35 INFO  : Context for 'APU' is selected.
+03:25:36 INFO  : System reset is completed.
+03:25:39 INFO  : 'after 3000' command is executed.
+03:25:39 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:25:41 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:25:41 INFO  : Context for 'APU' is selected.
+03:25:44 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:25:44 INFO  : 'configparams force-mem-access 1' command is executed.
+03:25:44 INFO  : Context for 'APU' is selected.
+03:25:44 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:25:44 INFO  : 'ps7_init' command is executed.
+03:25:44 INFO  : 'ps7_post_config' command is executed.
+03:25:44 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:25:44 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:25:44 INFO  : 'configparams force-mem-access 0' command is executed.
+03:25:44 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:25:45 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:25:45 INFO  : 'con' command is executed.
+03:25:45 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:25:45 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:29:53 INFO  : Disconnected from the channel tcfchan#53.
+03:29:53 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:29:53 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:29:53 INFO  : 'jtag frequency' command is executed.
+03:29:53 INFO  : Context for 'APU' is selected.
+03:29:53 INFO  : System reset is completed.
+03:29:56 INFO  : 'after 3000' command is executed.
+03:29:56 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:29:59 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:29:59 INFO  : Context for 'APU' is selected.
+03:30:02 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:30:02 INFO  : 'configparams force-mem-access 1' command is executed.
+03:30:02 INFO  : Context for 'APU' is selected.
+03:30:02 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:30:02 INFO  : 'ps7_init' command is executed.
+03:30:02 INFO  : 'ps7_post_config' command is executed.
+03:30:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:30:02 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:30:02 INFO  : 'configparams force-mem-access 0' command is executed.
+03:30:02 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:30:02 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:30:02 INFO  : 'con' command is executed.
+03:30:02 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:30:02 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:30:39 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:30:45 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:30:52 INFO  : Disconnected from the channel tcfchan#54.
+03:30:52 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:30:52 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:30:52 INFO  : 'jtag frequency' command is executed.
+03:30:52 INFO  : Context for 'APU' is selected.
+03:30:52 INFO  : System reset is completed.
+03:30:55 INFO  : 'after 3000' command is executed.
+03:30:55 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:30:57 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:30:57 INFO  : Context for 'APU' is selected.
+03:31:00 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:31:00 INFO  : 'configparams force-mem-access 1' command is executed.
+03:31:00 INFO  : Context for 'APU' is selected.
+03:31:00 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:31:01 INFO  : 'ps7_init' command is executed.
+03:31:01 INFO  : 'ps7_post_config' command is executed.
+03:31:01 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:31:01 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:31:01 INFO  : 'configparams force-mem-access 0' command is executed.
+03:31:01 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:31:01 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:31:01 INFO  : 'con' command is executed.
+03:31:01 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:31:01 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:38:04 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:38:10 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:38:20 INFO  : Disconnected from the channel tcfchan#56.
+03:38:21 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:38:39 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+----------------End of Script----------------
+
+03:38:39 ERROR : Could not find ARM device on the board for connection 'Local'.
+Check if the target is in:
+1. Split JTAG - No operations are possible with ARM DAP.
+2. Non JTAG bootmode - Bootrom may need time to enable DAP.
+Please try again.
+
+
+Troubleshooting hints:
+1. Check whether board is connected to system properly.
+2. In case of zynq board, check whether Digilent/Xilinx cable switch settings are correct.
+3. If you are using Xilinx Platform Cable USB, ensure that status LED is green.
+03:39:05 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:39:06 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:39:06 INFO  : 'jtag frequency' command is executed.
+03:39:06 INFO  : Context for 'APU' is selected.
+03:39:06 INFO  : System reset is completed.
+03:39:09 INFO  : 'after 3000' command is executed.
+03:39:09 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:39:11 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:39:11 INFO  : Context for 'APU' is selected.
+03:39:14 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:39:14 INFO  : 'configparams force-mem-access 1' command is executed.
+03:39:14 INFO  : Context for 'APU' is selected.
+03:39:14 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:39:14 INFO  : 'ps7_init' command is executed.
+03:39:14 INFO  : 'ps7_post_config' command is executed.
+03:39:14 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:39:15 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:39:15 INFO  : 'configparams force-mem-access 0' command is executed.
+03:39:15 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:39:15 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:39:15 INFO  : 'con' command is executed.
+03:39:15 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:39:15 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:41:10 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:41:15 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:41:24 INFO  : Disconnected from the channel tcfchan#58.
+03:41:24 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:41:24 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:41:24 INFO  : 'jtag frequency' command is executed.
+03:41:24 INFO  : Context for 'APU' is selected.
+03:41:24 INFO  : System reset is completed.
+03:41:27 INFO  : 'after 3000' command is executed.
+03:41:27 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:41:30 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:41:30 INFO  : Context for 'APU' is selected.
+03:41:32 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:41:32 INFO  : 'configparams force-mem-access 1' command is executed.
+03:41:32 INFO  : Context for 'APU' is selected.
+03:41:32 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:41:32 INFO  : 'ps7_init' command is executed.
+03:41:32 INFO  : 'ps7_post_config' command is executed.
+03:41:32 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:41:33 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:41:33 INFO  : 'configparams force-mem-access 0' command is executed.
+03:41:33 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:41:33 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:41:33 INFO  : 'con' command is executed.
+03:41:33 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:41:33 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:46:32 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:47:04 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:47:09 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:47:17 INFO  : Disconnected from the channel tcfchan#60.
+03:47:17 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:47:17 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:47:17 INFO  : 'jtag frequency' command is executed.
+03:47:17 INFO  : Context for 'APU' is selected.
+03:47:17 INFO  : System reset is completed.
+03:47:20 INFO  : 'after 3000' command is executed.
+03:47:20 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:47:23 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:47:23 INFO  : Context for 'APU' is selected.
+03:47:26 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:47:26 INFO  : 'configparams force-mem-access 1' command is executed.
+03:47:26 INFO  : Context for 'APU' is selected.
+03:47:26 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:47:26 INFO  : 'ps7_init' command is executed.
+03:47:26 INFO  : 'ps7_post_config' command is executed.
+03:47:26 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:47:26 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:47:26 INFO  : 'configparams force-mem-access 0' command is executed.
+03:47:26 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:47:26 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:47:26 INFO  : 'con' command is executed.
+03:47:26 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:47:26 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:48:58 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:50:46 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:50:48 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:50:50 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:50:51 INFO  : Disconnected from the channel tcfchan#62.
+03:50:51 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:50:52 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:50:52 INFO  : 'jtag frequency' command is executed.
+03:50:52 INFO  : Context for 'APU' is selected.
+03:50:52 INFO  : System reset is completed.
+03:50:55 INFO  : 'after 3000' command is executed.
+03:50:55 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:50:57 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:50:57 INFO  : Context for 'APU' is selected.
+03:51:00 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:51:00 INFO  : 'configparams force-mem-access 1' command is executed.
+03:51:00 INFO  : Context for 'APU' is selected.
+03:51:00 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:51:00 INFO  : 'ps7_init' command is executed.
+03:51:00 INFO  : 'ps7_post_config' command is executed.
+03:51:00 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:51:00 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:51:00 INFO  : 'configparams force-mem-access 0' command is executed.
+03:51:00 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:51:00 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:51:00 INFO  : 'con' command is executed.
+03:51:00 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:51:00 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+03:51:07 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:51:53 INFO  : Checking for BSP changes to sync application flags for project 'Audio_GPIO'...
+03:51:58 ERROR : (XSDB Server)ERROR: [Hsi 55-1571] The design file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa is already opened
+
+03:52:08 INFO  : Disconnected from the channel tcfchan#63.
+03:52:08 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+03:52:08 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+03:52:08 INFO  : 'jtag frequency' command is executed.
+03:52:08 INFO  : Context for 'APU' is selected.
+03:52:08 INFO  : System reset is completed.
+03:52:11 INFO  : 'after 3000' command is executed.
+03:52:11 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+03:52:14 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+03:52:14 INFO  : Context for 'APU' is selected.
+03:52:16 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+03:52:16 INFO  : 'configparams force-mem-access 1' command is executed.
+03:52:16 INFO  : Context for 'APU' is selected.
+03:52:16 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+03:52:16 INFO  : 'ps7_init' command is executed.
+03:52:16 INFO  : 'ps7_post_config' command is executed.
+03:52:16 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:52:17 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+03:52:17 INFO  : 'configparams force-mem-access 0' command is executed.
+03:52:17 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+03:52:17 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+03:52:17 INFO  : 'con' command is executed.
+03:52:17 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+03:52:17 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+04:03:22 INFO  : Disconnected from the channel tcfchan#65.
+04:03:22 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+04:03:22 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+04:03:22 INFO  : 'jtag frequency' command is executed.
+04:03:22 INFO  : Context for 'APU' is selected.
+04:03:22 INFO  : System reset is completed.
+04:03:25 INFO  : 'after 3000' command is executed.
+04:03:26 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+04:03:28 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+04:03:28 INFO  : Context for 'APU' is selected.
+04:03:31 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+04:03:31 INFO  : 'configparams force-mem-access 1' command is executed.
+04:03:31 INFO  : Context for 'APU' is selected.
+04:03:31 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+04:03:31 INFO  : 'ps7_init' command is executed.
+04:03:31 INFO  : 'ps7_post_config' command is executed.
+04:03:31 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:03:31 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+04:03:31 INFO  : 'configparams force-mem-access 0' command is executed.
+04:03:31 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+04:03:31 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:03:31 INFO  : 'con' command is executed.
+04:03:31 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+04:03:31 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+04:03:52 INFO  : Disconnected from the channel tcfchan#66.
+04:03:52 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+04:03:52 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+04:03:52 INFO  : 'jtag frequency' command is executed.
+04:03:52 INFO  : Context for 'APU' is selected.
+04:03:52 INFO  : System reset is completed.
+04:03:55 INFO  : 'after 3000' command is executed.
+04:03:55 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+04:03:58 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+04:03:58 INFO  : Context for 'APU' is selected.
+04:04:00 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+04:04:00 INFO  : 'configparams force-mem-access 1' command is executed.
+04:04:00 INFO  : Context for 'APU' is selected.
+04:04:00 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+04:04:01 INFO  : 'ps7_init' command is executed.
+04:04:01 INFO  : 'ps7_post_config' command is executed.
+04:04:01 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:04:01 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+04:04:01 INFO  : 'configparams force-mem-access 0' command is executed.
+04:04:01 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+04:04:01 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:04:01 INFO  : 'con' command is executed.
+04:04:01 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+04:04:01 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+04:04:28 INFO  : Disconnected from the channel tcfchan#67.
+04:04:28 INFO  : Connected to target on host '127.0.0.1' and port '3121'.
+04:04:28 INFO  : Jtag cable 'Digilent Zed 210248B77C6C' is selected.
+04:04:28 INFO  : 'jtag frequency' command is executed.
+04:04:28 INFO  : Context for 'APU' is selected.
+04:04:28 INFO  : System reset is completed.
+04:04:31 INFO  : 'after 3000' command is executed.
+04:04:31 INFO  : 'targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}' command is executed.
+04:04:33 INFO  : Device configured successfully with "D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit"
+04:04:33 INFO  : Context for 'APU' is selected.
+04:04:36 INFO  : Hardware design and registers information is loaded from 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa'.
+04:04:36 INFO  : 'configparams force-mem-access 1' command is executed.
+04:04:36 INFO  : Context for 'APU' is selected.
+04:04:36 INFO  : Sourcing of 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl' is done.
+04:04:36 INFO  : 'ps7_init' command is executed.
+04:04:36 INFO  : 'ps7_post_config' command is executed.
+04:04:36 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:04:37 INFO  : The application 'D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf' is downloaded to processor 'ps7_cortexa9_0'.
+04:04:37 INFO  : 'configparams force-mem-access 0' command is executed.
+04:04:37 INFO  : ----------------XSDB Script----------------
+connect -url tcp:127.0.0.1:3121
+targets -set -nocase -filter {name =~"APU*"}
+rst -system
+after 3000
+targets -set -filter {jtag_cable_name =~ "Digilent Zed 210248B77C6C" && level==0 && jtag_device_ctx=="jsn-Zed-210248B77C6C-23727093-0"}
+fpga -file D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
+targets -set -nocase -filter {name =~"APU*"}
+loadhw -hw D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/hw/design_1_wrapper.xsa -mem-ranges [list {0x40000000 0xbfffffff}] -regs
+configparams force-mem-access 1
+targets -set -nocase -filter {name =~"APU*"}
+source D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+targets -set -nocase -filter {name =~ "*A9*#0"}
+dow D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf
+configparams force-mem-access 0
+----------------End of Script----------------
+
+04:04:37 INFO  : Context for processor 'ps7_cortexa9_0' is selected.
+04:04:37 INFO  : 'con' command is executed.
+04:04:37 INFO  : ----------------XSDB Script (After Launch)----------------
+targets -set -nocase -filter {name =~ "*A9*#0"}
+con
+----------------End of Script----------------
+
+04:04:37 INFO  : Launch script is exported to file 'D:\Vitis\USERS\10_Zedboard_audio_in\Zedboard-DMA-2018.2-1\sdk_appsrc_with_GPIO\sdk_appsrc_with_GPIO\Audio_GPIO_system\_ide\scripts\systemdebugger_audio_gpio_system_standalone.tcl'
+04:04:55 INFO  : Disconnected from the channel tcfchan#68.

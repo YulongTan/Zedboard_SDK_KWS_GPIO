@@ -1,0 +1,9 @@
+TRACE::2025-11-02.21:40:53::SCWBifWriter::Found the complete platform D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm
+TRACE::2025-11-02.21:40:53::SCWBifWriter::hardware databse : design_1_wrapper_3
+TRACE::2025-11-02.21:40:53::SCWBifWriter::bitstream found in the design
+TRACE::2025-11-02.21:40:53::SCWBifWriter::Found a baremetal domain, proc: ps7_cortexa9_0
+TRACE::2025-11-02.21:40:53::SCWBifWriter::proc type : 
+TRACE::2025-11-02.21:40:53::SCWBifWriter::proc[0] : ps7_cortexa9_0
+TRACE::2025-11-02.21:40:53::SCWBifWriter::Device type is : zynq
+TRACE::2025-11-02.21:40:53::SCWBifWriter::Writing BIF to file : D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/_ide/bootimage/template_Audio_GPIO_system.bif
+TRACE::2025-11-02.21:40:53::SCWBifWriter::Writing the Zynq Baremetal bif 
