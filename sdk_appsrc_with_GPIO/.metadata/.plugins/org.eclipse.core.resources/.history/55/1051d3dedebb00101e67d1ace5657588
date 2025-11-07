@@ -1,0 +1,499 @@
+/************************************************************************/
+/*  demo.c -- Zynq DMA + I2S + KWS Demo (16 kHz single-channel input)  */
+/************************************************************************/
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include "xparameters.h"
+#include "xil_printf.h"
+#include "xil_cache.h"
+#include "sleep.h"
+#include "ff.h"
+
+#include "./audio/audio.h"
+#include "./dma/dma.h"
+#include "./intc/intc.h"
+#include "./userio/userio.h"
+#include "./iic/iic.h"
+#include "./kws/kws_engine.h"
+#include "xtime_l.h"
+
+#ifdef XPAR_INTC_0_DEVICE_ID
+ #include "xintc.h"
+#else
+ #include "xscugic.h"
+#endif
+
+/* ================================================================ */
+/*                     全局常量配置                                 */
+/* ================================================================ */
+//#define I2S_BYTES_PER_FRAME     5U
+// 修改为4U
+#define I2S_BYTES_PER_FRAME     4U
+#define AUDIO_SAMPLING_RATE     96000
+// 时间
+#define NR_AUDIO_TIME_OFF          0.5 // 舍掉前面0.5s的时间
+#define NR_AUDIO_TIME_KWS          1   // kws推理需要的时间
+#define NR_AUDIO_TIME_ALL          NR_AUDIO_TIME_OFF + NR_AUDIO_TIME_KWS  // 总的录音时间
+
+// 后缀加kws则代表时间为1，ori则代表有前面的偏移，off则代表是前面的偏移量
+#define NR_AUDIO_SAMPLES_1_kws        1 * (NR_AUDIO_TIME_ALL * AUDIO_SAMPLING_RATE)   // 1.5s总的录音音频 单音道，用来作为测试使用
+#define NR_AUDIO_SAMPLES_2_ori        2 * (NR_AUDIO_TIME_ALL * AUDIO_SAMPLING_RATE)   // 1.5s总的录音音频 需要乘2代表左右声道
+#define NR_AUDIO_SAMPLES_2_off    2 * (NR_AUDIO_TIME_OFF * AUDIO_SAMPLING_RATE)   // 跳过前0.5 s 乘以2代表左右声道
+#define NR_KWS_SAMPLES_1_kws        (NR_AUDIO_TIME_KWS * AUDIO_SAMPLING_RATE)       // 1 s音频
+
+#define KWS_TARGET_SR           16000
+#define NR_KWS_SAMPLES          KWS_TARGET_SR
+#define DOWNSAMPLE_RATIO        6
+// DMA 总传输字节
+#define KWS_DMA_TRANSFER_BYTES  (I2S_BYTES_PER_FRAME * NR_AUDIO_SAMPLES_2_ori)
+
+/* ================================================================ */
+/*                       全局变量                                   */
+/* ================================================================ */
+volatile sDemo_t Demo = {0};
+//static FATFS fs; static FIL fil;
+//static int32_t gMicMono96k[NR_AUDIO_SAMPLES_KWS]; // 1s音频输入，采样率为96K, 左右声道归一后的
+//static int32_t gKws16k[NR_KWS_SAMPLES];       // kws音频输入
+//static int16_t gKws16kPcm16[NR_KWS_SAMPLES];
+//static int32_t gPlayback96k[SEGMENT_FRAMES];
+
+static int32_t gMic_96k_2[NR_AUDIO_SAMPLES_2_ori]; // 用来测试单双音道 1.5s
+// 双通道变单通道
+static int32_t gMic_96k_1[]; // 单音道
+
+static int32_t gMic_16k_1[NR_AUDIO_SAMPLES_KWS_1]
+
+/* ================================================================ */
+/*                   外设实例与中断向量表                            */
+/* ================================================================ */
+#ifdef XPAR_INTC_0_DEVICE_ID
+static XIntc sIntc;
+#else
+static XScuGic sIntc;
+#endif
+static XIic    sIic;
+static XAxiDma sAxiDma;
+static XGpio   sUserIO;
+
+#ifdef XPAR_INTC_0_DEVICE_ID
+const ivt_t ivt[] = {
+    {XPAR_AXI_INTC_0_AXI_IIC_0_IIC2INTC_IRPT_INTR, (XInterruptHandler)XIic_InterruptHandler, &sIic},
+    {XPAR_AXI_INTC_0_AXI_DMA_0_S2MM_INTROUT_INTR,  (XInterruptHandler)fnS2MMInterruptHandler, &sAxiDma},
+    {XPAR_AXI_INTC_0_AXI_DMA_0_MM2S_INTROUT_INTR,  (XInterruptHandler)fnMM2SInterruptHandler, &sAxiDma},
+    {XPAR_AXI_INTC_0_AXI_GPIO_0_IP2INTC_IRPT_INTR, (XInterruptHandler)fnUserIOIsr, &sUserIO}
+};
+#else
+const ivt_t ivt[] = {
+    {XPAR_FABRIC_AXI_IIC_0_IIC2INTC_IRPT_INTR, (Xil_ExceptionHandler)XIic_InterruptHandler, &sIic},
+    {XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR,  (Xil_ExceptionHandler)fnS2MMInterruptHandler, &sAxiDma},
+    {XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR,  (Xil_ExceptionHandler)fnMM2SInterruptHandler, &sAxiDma},
+    {XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR, (Xil_ExceptionHandler)fnUserIOIsr, &sUserIO}
+};
+#endif
+
+/* ================================================================ */
+/*                     实用函数                                     */
+/* ================================================================ */
+//static void fnSetSingleLed(XGpio *psGpio, u8 ledIndex)
+//{
+//    u32 v = (ledIndex < 8) ? (1U << ledIndex) : 0U;
+//    XGpio_DiscreteWrite(psGpio, LED_CHANNEL, v);
+//}
+//
+//static int32_t sign_extend_20bit(uint32_t v)
+//{
+//    if (v & 0x80000U) v |= 0xFFF00000U;
+//    return (int32_t)v;
+//}
+//
+//static uint8_t get_stream_byte(const uint8_t *src,
+//                               size_t total_bytes,
+//                               size_t byte_index,
+//                               int reversed)
+//{
+//    if (!reversed) {
+//        if (byte_index < total_bytes) {
+//            return src[byte_index];
+//        }
+//        return 0U;
+//    }
+//
+//    size_t word_index = byte_index / 4U;
+//    size_t base = word_index * 4U;
+//    uint8_t reordered[4] = {0U, 0U, 0U, 0U};
+//
+//    if (base < total_bytes) {
+//        size_t remaining = total_bytes - base;
+//        size_t copy = (remaining < 4U) ? remaining : 4U;
+//        for (size_t i = 0U; i < copy; ++i) {
+//            reordered[3U - i] = src[base + i];
+//        }
+//    }
+//
+//    return reordered[byte_index % 4U];
+//}
+//
+///* I2S 解包：5 Bytes → 单声道Q31样本 */
+//static void decode_i2s_frame(const uint8_t *src,
+//                             size_t total_bytes,
+//                             size_t frame_idx,
+//                             int reversed,
+//                             int32_t *left_q31,
+//                             int32_t *right_q31)
+//{
+//    size_t byte_base = frame_idx * I2S_BYTES_PER_FRAME;
+//    uint32_t B0 = get_stream_byte(src, total_bytes, byte_base + 0U, reversed);
+//    uint32_t B1 = get_stream_byte(src, total_bytes, byte_base + 1U, reversed);
+//    uint32_t B2 = get_stream_byte(src, total_bytes, byte_base + 2U, reversed);
+//    uint32_t B3 = get_stream_byte(src, total_bytes, byte_base + 3U, reversed);
+//    uint32_t B4 = get_stream_byte(src, total_bytes, byte_base + 4U, reversed);
+//
+//    uint32_t left_u  = (B0 << 12) | (B1 << 4) | (B2 >> 4);
+//    uint32_t right_u = ((B2 & 0x0F) << 16) | (B3 << 8) | B4;
+//    *left_q31  = sign_extend_20bit(left_u)  << 12;
+//    *right_q31 = sign_extend_20bit(right_u) << 12;
+//}
+//
+//static int detect_dma_byte_reversal(const uint8_t *src, size_t frames)
+//{
+//    if (frames < 2U) {
+//        return 0;
+//    }
+//
+//    size_t check_frames = frames < 256U ? frames : 256U;
+//    int64_t normal_score = 0;
+//    int64_t reversed_score = 0;
+//    int32_t prev_normal = 0;
+//    int32_t prev_reversed = 0;
+//    int first = 1;
+//    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
+//
+//    for (size_t i = 0; i < check_frames; ++i) {
+//        int32_t left_normal, right_normal;
+//        int32_t left_reversed, right_reversed;
+//
+//        decode_i2s_frame(src, total_bytes, i, 0, &left_normal, &right_normal);
+//        decode_i2s_frame(src, total_bytes, i, 1, &left_reversed, &right_reversed);
+//
+//        int32_t mono_normal = (left_normal + right_normal) >> 1;
+//        int32_t mono_reversed = (left_reversed + right_reversed) >> 1;
+//
+//        if (!first) {
+//            normal_score += llabs((int64_t)mono_normal - prev_normal);
+//            reversed_score += llabs((int64_t)mono_reversed - prev_reversed);
+//        } else {
+//            first = 0;
+//        }
+//
+//        prev_normal = mono_normal;
+//        prev_reversed = mono_reversed;
+//    }
+//
+//    return reversed_score < normal_score;
+//}
+//
+//static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, int32_t *dst)
+//{
+//    if (frames == 0U) {
+//        return;
+//    }
+//
+//    int reversed = detect_dma_byte_reversal(src, frames);
+//    xil_printf("[I2S] Byte order: %s\r\n",
+//               reversed ? "little-endian (DMA reversed)"
+//                        : "big-endian (standard)");
+//
+//    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
+//
+//    for (size_t i = 0; i < frames; ++i) {
+//        int32_t left, right;
+//        decode_i2s_frame(src, total_bytes, i, reversed, &left, &right);
+//        dst[i] = (left + right) >> 1;
+//    }
+//}
+//
+///* 6×下采样 */
+//static void downsample_6x_avg(const int32_t *in, int32_t *out, int input_samples)
+//{
+//    int out_samples = input_samples / DOWNSAMPLE_RATIO;
+//    for (int i = 0; i < out_samples; ++i) {
+//        int64_t acc = 0;
+//        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
+//            acc += in[i * DOWNSAMPLE_RATIO + j];
+//        out[i] = (int32_t)(acc / DOWNSAMPLE_RATIO);
+//    }
+//}
+//
+///* 6×上采样（回放） */
+//static void upsample_6x_for_playback(const int32_t *in16k, int32_t *out96k, int n_in)
+//{
+//    for (int i = 0; i < n_in; ++i)
+//        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
+//            out96k[i*DOWNSAMPLE_RATIO+j] = in16k[i];
+//}
+//
+//static void q31_to_pcm16(const int32_t *src, int16_t *dst, size_t samples)
+//{
+//    for (size_t i = 0; i < samples; ++i) {
+//        int32_t v = src[i] >> 16;  /* 20-bit 样本 → 16-bit PCM */
+//        if (v > 32767) {
+//            v = 32767;
+//        } else if (v < -32768) {
+//            v = -32768;
+//        }
+//        dst[i] = (int16_t)v;
+//    }
+//}
+// 混合声道加下采样
+/**
+ * @brief 从DMA内存中提取交错的左右声道，混合成单声道
+ * @param src_ptr   DMA写入的基址 (MEM_BASE_ADDR)
+ * @param dst_mono  输出单声道缓冲区 (int32_t[])
+ * @param total_frames  总帧数 (L+R对数)
+ * @param mix_mode  0=取左声道, 1=取右声道, 2=平均混合
+ */
+static void mix_stereo_to_mono(const int32_t *src_ptr,
+                               int32_t *dst_mono,
+                               size_t total_frames,
+                               int mix_mode)
+{
+    for (size_t i = 0; i < total_frames; ++i) {
+        int32_t left  = src_ptr[2 * i + 0];
+        int32_t right = src_ptr[2 * i + 1];
+
+        int32_t mono;
+        if (mix_mode == 0)
+            mono = left;
+        else if (mix_mode == 1)
+            mono = right;
+        else
+            mono = (left >> 1) + (right >> 1);  // 避免溢出
+        dst_mono[i] = mono;
+    }
+}
+/**
+ * @brief 简单整数倍下采样（平均法或取样法）
+ * @param in96k   输入信号（96k）
+ * @param out16k  输出信号（16k）
+ * @param n_in    输入样本数
+ * @param ratio   下采样比例 (6或7)
+ * @param use_avg 是否采用平均法 (1=平均, 0=取第一个点)
+ */
+static void downsample_int(const int32_t *in96k,
+                           int32_t *out16k,
+                           int n_in,
+                           int ratio,
+                           int use_avg)
+{
+    int out_n = n_in / ratio;
+    for (int i = 0; i < out_n; ++i) {
+        if (use_avg) {
+            int64_t acc = 0;
+            for (int j = 0; j < ratio; ++j)
+                acc += in96k[i * ratio + j];
+            out16k[i] = (int32_t)(acc / ratio);
+        } else {
+            out16k[i] = in96k[i * ratio];
+        }
+    }
+}
+
+typedef struct __attribute__((__packed__)) {
+    char     riff_id[4];
+    uint32_t riff_size;
+    char     wave_id[4];
+    char     fmt_id[4];
+    uint32_t fmt_size;
+    uint16_t audio_format;
+    uint16_t num_channels;
+    uint32_t sample_rate;
+    uint32_t byte_rate;
+    uint16_t block_align;
+    uint16_t bits_per_sample;
+    char     data_id[4];
+    uint32_t data_size;
+} wav_header_t;
+
+static void fill_wav_header(wav_header_t *hdr, uint32_t sample_rate, uint32_t frames)
+{
+    const uint32_t data_bytes = frames * sizeof(int16_t);
+    memcpy(hdr->riff_id, "RIFF", 4);
+    hdr->riff_size = 36U + data_bytes;
+    memcpy(hdr->wave_id, "WAVE", 4);
+    memcpy(hdr->fmt_id,  "fmt ", 4);
+    hdr->fmt_size       = 16U;
+    hdr->audio_format   = 1U;
+    hdr->num_channels   = 1U;
+    hdr->sample_rate    = sample_rate;
+    hdr->block_align    = sizeof(int16_t);
+    hdr->byte_rate      = sample_rate * hdr->block_align;
+    hdr->bits_per_sample = 16U;
+    memcpy(hdr->data_id, "data", 4);
+    hdr->data_size = data_bytes;
+}
+
+//static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t samples, uint32_t sample_rate)
+//{
+//    FATFS *pfs = &fs;
+//    FRESULT fr = f_mount(pfs, "0:/", 1);
+//    if (fr != FR_OK) {
+//        xil_printf("[SD] Mount failed (%d)\r\n", fr);
+//        return;
+//    }
+//
+//    const char *open_path = path;
+//    fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+//    if (fr == FR_INVALID_NAME) {
+//        static const char fallback_path[] = "0:/REC16K.WAV";
+//        xil_printf("[SD] Invalid filename '%s', falling back to %s\r\n",
+//                   path, fallback_path);
+//        open_path = fallback_path;
+//        fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
+//    }
+//
+//    if (fr != FR_OK) {
+//        xil_printf("[SD] Open file failed (%d)\r\n", fr);
+//        return;
+//    }
+//
+//    q31_to_pcm16(buf, gKws16kPcm16, samples);
+//
+//    wav_header_t header;
+//    fill_wav_header(&header, sample_rate, (uint32_t)samples);
+//
+//    UINT bw = 0U;
+//    Xil_DCacheFlushRange((UINTPTR)&header, sizeof(header));
+//    fr = f_write(&fil, &header, sizeof(header), &bw);
+//    if (fr != FR_OK || bw != sizeof(header)) {
+//        xil_printf("[SD] Write header failed (%d, %lu)\r\n", fr, (unsigned long)bw);
+//        f_close(&fil);
+//        return;
+//    }
+//
+//    UINT data_bytes = samples * sizeof(int16_t);
+//    Xil_DCacheFlushRange((UINTPTR)gKws16kPcm16, data_bytes);
+//    fr = f_write(&fil, gKws16kPcm16, data_bytes, &bw);
+//    if (fr != FR_OK || bw != data_bytes) {
+//        xil_printf("[SD] Write payload failed (%d, %lu/%u)\r\n", fr, (unsigned long)bw, data_bytes);
+//    }
+//    f_close(&fil);
+//
+//    xil_printf("[SD] %s saved\r\n", open_path);
+//}
+/* ================================================================ */
+/*                       主程序入口                                 */
+/* ================================================================ */
+int main(void)
+{
+    xil_printf("\r\n--- Zynq Audio DMA + KWS Demo ---\r\n");
+
+    if(fnInitInterruptController(&sIntc)!=XST_SUCCESS) return XST_FAILURE;
+    if(fnInitIic(&sIic)!=XST_SUCCESS) return XST_FAILURE;
+    if(fnInitUserIO(&sUserIO)!=XST_SUCCESS) return XST_FAILURE;
+    if(fnConfigDma(&sAxiDma)!=XST_SUCCESS) return XST_FAILURE;
+    if(fnInitAudio()!=XST_SUCCESS) return XST_FAILURE;
+    fnEnableInterrupts(&sIntc,&ivt[0],sizeof(ivt)/sizeof(ivt[0]));
+
+    if(KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH)!=XST_SUCCESS){
+        xil_printf("KWS engine init failed\r\n"); return XST_FAILURE;
+    }
+    Demo.fKwsEngineReady=1; xil_printf("KWS engine ready\r\n");
+
+    xil_printf("Press BTNU to record 1 s audio, auto-play & run KWS\r\n");
+    XTime tStart, tEnd;
+    int duration; // 计时
+    while(1){
+        /* ========== 录音完成 ========== */
+        if(Demo.fDmaS2MMEvent){
+            xil_printf("[DMA] Recording done\r\n");
+            Xil_Out32(I2S_STREAM_CONTROL_REG,0);
+            Xil_Out32(I2S_TRANSFER_CONTROL_REG,0);
+            Xil_DCacheInvalidateRange((UINTPTR)MEM_BASE_ADDR,KWS_DMA_TRANSFER_BYTES);
+
+//            const uint8_t *dma_bytes=(const uint8_t*)(uintptr_t)MEM_BASE_ADDR;
+//            const size_t total_frames=KWS_DMA_TRANSFER_BYTES/I2S_BYTES_PER_FRAME;
+
+            // 解包
+//            unpack_i2s_frames_to_q31_le_safe(dma_bytes,total_frames,gMicMono96k);
+            // 下采样
+//            downsample_6x_avg(gMicMono96k+START_OFFSET_FRAMES,gKws16k,SEGMENT_FRAMES);
+            // 双通道改为单通道
+//            const int32_t *dma_samples =(const int32_t*)(uintptr_t)MEM_BASE_ADDR;
+
+//            const int32_t *dma_samples = (const int32_t*)(uintptr_t)MEM_BASE_ADDR + START_OFFSET_FRAMES * 2; //跳过前面0。5s音频，因为此时还是双音道，所以乘2
+//
+//            size_t total_lr_pairs = 2 * NR_AUDIO_SAMPLES;  // 1 frame = 1 left+right pair 2乘以总的采样点数
+//            mix_stereo_to_mono(dma_samples, );
+//
+//            /* 自动播放：与 KWS 输入同一时间段 */
+//            upsample_6x_for_playback(gKws16k,gPlayback96k,NR_KWS_SAMPLES);
+//            UINTPTR playback_base = (UINTPTR)MEM_BASE_ADDR +
+//                                   (UINTPTR)START_OFFSET_FRAMES * I2S_BYTES_PER_FRAME;
+//            fnSetHpOutput();
+//            usleep(100000);
+//            fnAudioPlay(sAxiDma, playback_base, SEGMENT_FRAMES);
+
+
+//            //添加查看的代码
+            uint32_t *p = (uint32_t *)(uintptr_t)MEM_BASE_ADDR;
+            for (int i = 0; i < 10; i++) {
+                xil_printf("[%d] L=%08x  R=%08x\r\n", i, p[2*i], p[2*i+1]);
+            }
+
+//            xil_printf("\r\n[DMA] Dump first 64 bytes from MEM_BASE_ADDR = 0x%08X\r\n",
+//                       (unsigned int)MEM_BASE_ADDR);
+//            for (int i = 0; i < 64; i++) {
+//                xil_printf("%02X ", p[i]);
+//                if ((i & 0x0F) == 0x0F) xil_printf("\r\n");  // 每16字节换行
+//            }
+
+//
+//            /* KWS 推理 */
+//            u32 cls=0; float conf=0.0f;
+//            if(KwsEngine_ProcessRecording(gKws16k,NR_KWS_SAMPLES,&cls,&conf)==XST_SUCCESS){
+//                int scaled=(int)(conf*10000.0f+0.5f);
+//                xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
+//                    (unsigned long)cls,scaled/100,scaled%100);
+//                fnSetSingleLed(&sUserIO,(cls-2)%8);
+//            } else xil_printf("KWS inference failed\r\n");
+
+            Demo.fDmaS2MMEvent=0; Demo.fAudioRecord=0;
+        }
+
+        /* ========== 播放完成 ========== */
+        if(Demo.fDmaMM2SEvent){
+            xil_printf("[PLAY] done\r\n");
+            Xil_Out32(I2S_STREAM_CONTROL_REG,0);
+            Xil_Out32(I2S_TRANSFER_CONTROL_REG,0);
+//			XTime_GetTime(&tEnd);
+//			duration = (int)((double)(tEnd - tStart) * 1000 / (COUNTS_PER_SECOND));
+//			xil_printf("[Timer] Record duration = %d s\r\n", duration);
+            Demo.fDmaMM2SEvent=0; Demo.fAudioPlayback=0;
+        }
+
+        /* ========== 按键事件 ========== */
+        if(Demo.fUserIOEvent){
+            if(Demo.chBtn=='u' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
+                xil_printf("Start Recording...\r\n");
+                fnSetMicInput(); usleep(100000);
+                fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+                Demo.fAudioRecord=1;
+            } else if(Demo.chBtn=='d' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
+                xil_printf("Start Playback...\r\n");
+                fnSetHpOutput(); usleep(100000);
+                //
+//                XTime_GetTime(&tStart);
+                fnAudioPlay(sAxiDma,(UINTPTR)MEM_BASE_ADDR,NR_AUDIO_SAMPLES);
+                //
+                Demo.fAudioPlayback=1;
+            }
+            Demo.fUserIOEvent=0; Demo.chBtn=0;
+        }
+    }
+    return 0;
+}
+

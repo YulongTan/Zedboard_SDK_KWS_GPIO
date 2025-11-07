@@ -74,5 +74,5 @@
 
 XStatus fnInitUserIO(XGpio *psGpio);
 void fnUserIOIsr(void *pvInst);
-
+void fnSetSingleLed(XGpio *psGpio, u8 LedIndex);
 #endif /* USERIO_H_ */

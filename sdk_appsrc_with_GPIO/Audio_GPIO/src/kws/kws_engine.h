@@ -17,6 +17,7 @@ extern "C" {
 #define KWS_DEFAULT_WEIGHT_PATH "0:/bnn_1031.bin"
 
 #define KWS_SOURCE_SAMPLE_RATE   16000U
+//#define KWS_SOURCE_SAMPLE_RATE   96000U
 #define KWS_SOURCE_CHANNELS      1U
 #define KWS_TARGET_SAMPLE_RATE   16000U
 #define KWS_INPUT_ROWS           40U

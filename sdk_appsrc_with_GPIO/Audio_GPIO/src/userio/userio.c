@@ -97,6 +97,20 @@ XStatus fnInitUserIO(XGpio *psGpio)
 	return XST_SUCCESS;
 }
 
+void fnSetSingleLed(XGpio *psGpio, u8 LedIndex)
+{
+    u32 led_mask = 0x00;
+
+    if (LedIndex < 8) {
+        led_mask = 1 << LedIndex;  // 例如 LedIndex=3 → 亮第4个灯
+    } else {
+        led_mask = 0x00;           // 无效编号 → 全灭
+    }
+
+    // 写入 GPIO 控制寄存器
+    XGpio_DiscreteWrite(psGpio, LED_CHANNEL, led_mask);
+}
+
 void fnUpdateLedsFromSwitches(XGpio *psGpio)
 {
 	static u32 dwPrevButtons = 0;

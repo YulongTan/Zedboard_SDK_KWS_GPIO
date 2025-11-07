@@ -1,6 +1,6 @@
 Nothing to build in platform 'Audio_with_GPIO'
 
-05:00:20 **** Incremental Build of configuration Debug for project Audio_GPIO ****
+23:17:48 **** Incremental Build of configuration Debug for project Audio_GPIO ****
 make all 
 D:/Vitis/Vitis/2022.1/gnuwin/bin/make --no-print-directory pre-build
 a9-linaro-pre-build-step
@@ -9,6 +9,9 @@ D:/Vitis/Vitis/2022.1/gnuwin/bin/make --no-print-directory main-build
 'Building file: ../src/demo.c'
 'Invoking: ARM v7 gcc compiler'
 arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/demo.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -ID:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/sw/Audio_with_GPIO/standalone_domain/bspinclude/include -MMD -MP -MF"src/demo.d" -MT"src/demo.o" -o "src/demo.o" "../src/demo.c"
+../src/demo.c:68:1: warning: variably modified 'gMic_96k_2' at file scope
+   68 | static int32_t gMic_96k_2[NR_AUDIO_SAMPLES_2c_ori]; // 用来测试单双音道 1.5s
+      | ^~~~~~
 'Finished building: ../src/demo.c'
 ' '
 'Building target: Audio_GPIO.elf'
@@ -19,13 +22,13 @@ arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=non
 'Invoking: ARM v7 Print Size'
 arm-none-eabi-size Audio_GPIO.elf  |tee "Audio_GPIO.elf.size"
    text	   data	    bss	    dec	    hex	filename
- 104792	   3128	35476384	35584304	21ef930	Audio_GPIO.elf
+ 104088	   3128	35475200	35582416	21ef1d0	Audio_GPIO.elf
 'Finished building: Audio_GPIO.elf.size'
 ' '
-05:00:23 **** Incremental Build of configuration Debug for project Audio_GPIO_system ****
+23:17:50 **** Incremental Build of configuration Debug for project Audio_GPIO_system ****
 make all 
 Generating bif file for the system project
-generate_system_bif.bat 13410 D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm standalone_domain D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/system.bif
+generate_system_bif.bat 5847 D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm standalone_domain D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/system.bif
 sdcard_gen --xpfm D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_with_GPIO/export/Audio_with_GPIO/Audio_with_GPIO.xpfm --sys_config Audio_with_GPIO --bif D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/system.bif --bitstream D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit --elf D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/Debug/Audio_GPIO.elf,ps7_cortexa9_0
 creating BOOT.BIN using D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO/_ide/bitstream/design_1_wrapper.bit
 Running D:/Vitis/Vitis/2022.1/bin/bootgen  -image D:/Vitis/USERS/10_Zedboard_audio_in/Zedboard-DMA-2018.2-1/sdk_appsrc_with_GPIO/sdk_appsrc_with_GPIO/Audio_GPIO_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN

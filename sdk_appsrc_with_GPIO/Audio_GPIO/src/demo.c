@@ -1,710 +1,3 @@
-///************************************************************************/
-///*																		*/
-///*	demo.c	--	Zedboard DMA Demo				 						*/
-///*																		*/
-///************************************************************************/
-///*	Author: Sam Lowe											*/
-///*	Copyright 2015, Digilent Inc.										*/
-///************************************************************************/
-///*  Module Description: 												*/
-///*																		*/
-///*		This file contains code for running a demonstration of the		*/
-///*		DMA audio inputs and outputs on the Zedboard.					*/
-///*																		*/
-///*																		*/
-///************************************************************************/
-///*  Notes:																*/
-///*																		*/
-///*		- The DMA max burst size needs to be set to 16 or less			*/
-///*																		*/
-///************************************************************************/
-///*  Revision History:													*/
-///* 																		*/
-///*		8/23/2016(SamL): Created										*/
-///*																		*/
-///************************************************************************/
-//
-//
-//#include "demo.h"
-//
-//
-//
-//
-//#include "./audio/audio.h"
-//#include "./dma/dma.h"
-//#include "./intc/intc.h"
-//#include "./userio/userio.h"
-//
-//#include "./iic/iic.h"
-//#include "./kws/kws_engine.h"
-//
-///***************************** Include Files *********************************/
-//#include "ff.h"
-//#include "xil_cache.h"
-//
-//#include "xaxidma.h"
-//
-//#include "xparameters.h"
-//#include "xil_exception.h"
-//#include "xdebug.h"
-//#include "xiic.h"
-//#include "xaxidma.h"
-//#include <stdint.h>
-//
-//
-//
-//#ifdef XPAR_INTC_0_DEVICE_ID
-// #include "xintc.h"
-// #include "microblaze_sleep.h"
-//#else
-// #include "xscugic.h"
-//#include "sleep.h"
-//#include "xil_cache.h"
-//#endif
-//
-//// 音频录制
-//static FATFS fs;
-//static FIL fil;
-//static int rec_index = 0;
-//// === 写入SD卡 ===
-//FRESULT fr;
-///************************** Constant Definitions *****************************/
-//
-///*
-// * Device hardware build related constants.
-// */
-//
-//// Audio constants
-//// Number of seconds to record/playback
-//// store 1s, playback 1s
-////#define NR_SEC_TO_REC_PLAY		1
-//#define I2S_BYTES_PER_FRAME	5U
-//static int32_t sign_extend_20bit(uint32_t value)
-//{
-//    if (value & 0x80000U) {
-//        value |= 0xFFF00000U;
-//    }
-//    return (int32_t)value;
-//}
-//
-////static void unpack_i2s_frames_to_q31(const uint8_t *src,
-////                                    size_t frames,
-////                                    int32_t *dst)
-////{
-////    for (size_t i = 0U; i < frames; ++i) {
-////        size_t byte_idx = i * I2S_BYTES_PER_FRAME;
-////        uint32_t b0 = src[byte_idx + 0U];
-////        uint32_t b1 = src[byte_idx + 1U];
-////        uint32_t b2 = src[byte_idx + 2U];
-////        uint32_t b3 = src[byte_idx + 3U];
-////        uint32_t b4 = src[byte_idx + 4U];
-////
-////        uint32_t left_u = (b0 << 12) | (b1 << 4) | (b2 >> 4);
-////        uint32_t right_u = ((b2 & 0x0FU) << 16) | (b3 << 8) | b4;
-////
-////        int32_t left = sign_extend_20bit(left_u) << 12;
-////        int32_t right = sign_extend_20bit(right_u) << 12;
-////
-////        int64_t mono = ((int64_t)left + (int64_t)right) / 2;
-////        dst[i] = (int32_t)mono;
-////    }
-////}
-//// 注意小端系统
-//static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src,
-//                                             size_t frames,
-//                                             int32_t *dst)
-//{
-//    if (frames == 0) return;
-//
-//    /* 自动检测是否字节反序：看前5字节的高位是否像MSB-first */
-//    uint8_t b0 = src[0], b4 = src[4];
-//    int reversed = (b0 < b4);
-//    // 一般语音波形高位(MSB)先出，大部分时间 |b0| > |b4|；如果反了则 reversed=1
-//
-//    if (reversed)
-//        xil_printf("[I2S] Detected reversed byte order (DMA little-endian)\r\n");
-//    else
-//        xil_printf("[I2S] Detected normal byte order (I2S big-endian stream)\r\n");
-//
-//    for (size_t i = 0U; i < frames; ++i)
-//    {
-//        size_t idx = i * I2S_BYTES_PER_FRAME;
-//        uint32_t b0, b1, b2, b3, b4;
-//
-//        if (!reversed)
-//        {
-//            /* I2S标准顺序：MSB先出 */
-//            b0 = src[idx + 0];
-//            b1 = src[idx + 1];
-//            b2 = src[idx + 2];
-//            b3 = src[idx + 3];
-//            b4 = src[idx + 4];
-//        }
-//        else
-//        {
-//            /* 小端写入反序 */
-//            b4 = src[idx + 0];
-//            b3 = src[idx + 1];
-//            b2 = src[idx + 2];
-//            b1 = src[idx + 3];
-//            b0 = src[idx + 4];
-//        }
-//
-//        /* 拼左声道 (b0,b1,b2[7:4]) */
-//        uint32_t left_u  = (b0 << 12) | (b1 << 4) | (b2 >> 4);
-//        /* 拼右声道 (b2[3:0],b3,b4) */
-//        uint32_t right_u = ((b2 & 0x0F) << 16) | (b3 << 8) | b4;
-//
-//        /* 符号扩展并左移成Q31 */
-//        int32_t left  = sign_extend_20bit(left_u)  << 12;
-//        int32_t right = sign_extend_20bit(right_u) << 12;
-//
-//        /* 混成立体声 → 单声道 */
-//        int64_t mono = ((int64_t)left + (int64_t)right) / 2;
-//        dst[i] = (int32_t)mono;
-//    }
-//}
-//
-//// 淇敼褰曢煶闀垮害锛屾坊鍔犱竴涓ǔ瀹氭椂闂�0.1s
-//#define BIAS_SEC 0.1f  // 鍋忕疆绋冲畾鏃堕暱 0.1 绉�
-//#define NR_SEC_TO_REC_PLAY		(1.0f + BIAS_SEC)
-//// 鎸夐敭鏃堕棿
-//#define KWS_VALID_SEC  1U
-//// ADC/DAC sampling rate in Hz
-////#define AUDIO_SAMPLING_RATE		1000
-//#define AUDIO_SAMPLING_RATE	  96000
-//#define AUDIO_SAMPLE_BYTES	  5U
-//#define KWS_SAMPLE_BYTES	  4U
-//// Number of samples to record/playback
-//#define NR_AUDIO_SAMPLES		((int)(NR_SEC_TO_REC_PLAY*AUDIO_SAMPLING_RATE))
-//// KWS鐨勯噰鏍烽鐜囨槸16000
-//#define NR_KWS_SAMPLES          ((int)(KWS_VALID_SEC*KWS_SOURCE_SAMPLE_RATE))
-//// 涔樹互5鏄洜涓�32浣嶄綅瀹戒箻浠ヨ�虫満鍙岄�氶亾
-//#define KWS_DMA_TRANSFER_BYTES		(AUDIO_SAMPLE_BYTES * NR_AUDIO_SAMPLES)
-//
-///* Timeout loop counter for reset
-// */
-//#define RESET_TIMEOUT_COUNTER	10000
-//
-//#define TEST_START_VALUE	0x0
-//// 闇�瑕佸闊抽杩涜闄嶉噰鏍�
-//static int32_t gMicMonoBuffer[NR_AUDIO_SAMPLES];
-//static int32_t gKwsInputBuffer[NR_KWS_SAMPLES];
-//
-///**************************** Type Definitions *******************************/
-//#define AUDIO_FRAME_STRIDE	  KWS_SOURCE_CHANNELS // 1U
-//
-////#define AUDIO_BUFFER_BYTES	  ((size_t)NR_SEC_TO_REC_PLAY * AUDIO_SAMPLING_RATE * AUDIO_FRAME_STRIDE * AUDIO_SAMPLE_BYTES)
-//// KWS transfer
-///* 绠�鍗曞钩鍧� 6 鐐归檷閲囨牱锛屽彲鍦� PS 绔疄鏃惰繍琛� */
-//#define DOWNSAMPLE_RATIO 6
-//static void downsample_6x_avg(const int32_t *in, int32_t *out, int input_samples) {
-//    int output_samples = input_samples / DOWNSAMPLE_RATIO;
-//    for (int i = 0; i < output_samples; ++i) {
-//        int64_t sum = 0;
-//        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
-//            sum += in[i * DOWNSAMPLE_RATIO + j];
-//        out[i] = (int32_t)(sum / DOWNSAMPLE_RATIO);
-//    }
-//}
-///***************** Macros (Inline Functions) Definitions *********************/
-//
-//
-///************************** Function Prototypes ******************************/
-//#if (!defined(DEBUG))
-//extern void xil_printf(const char *format, ...);
-//#endif
-//
-///**
-// * @brief 点亮指定编号的LED（其余LED熄灭）
-// * @param psGpio   已初始化的GPIO实例指针
-// * @param ledIndex 要点亮的LED编号 (0~7)
-// */
-//void fnSetSingleLed(XGpio *psGpio, u8 ledIndex)
-//{
-//    u32 led_value = 0x00;
-//    if (ledIndex < 8) {
-//        led_value = (1 << ledIndex);  // 只点亮对应LED
-//        xil_printf("LED = %d\r\n", led_value);
-//    } else {
-//        xil_printf("LED index out of range (0-7)\r\n");
-//    }
-//
-//    XGpio_DiscreteWrite(psGpio, LED_CHANNEL, led_value);
-//}
-//
-//
-///************************** Variable Definitions *****************************/
-///*
-// * Device instance definitions
-// */
-//
-//static XIic sIic;
-//static XAxiDma sAxiDma;		/* Instance of the XAxiDma */
-//
-//static XGpio sUserIO;
-//
-//volatile sDemo_t Demo = {0};
-//
-//#ifdef XPAR_INTC_0_DEVICE_ID
-// static XIntc sIntc;
-//#else
-// static XScuGic sIntc;
-//#endif
-//
-////
-//// Interrupt vector table
-//#ifdef XPAR_INTC_0_DEVICE_ID
-//const ivt_t ivt[] = {
-//	//IIC
-//	{XPAR_AXI_INTC_0_AXI_IIC_0_IIC2INTC_IRPT_INTR, (XInterruptHandler)XIic_InterruptHandler, &sIic},
-//	//DMA Stream to MemoryMap Interrupt handler
-//	{XPAR_AXI_INTC_0_AXI_DMA_0_S2MM_INTROUT_INTR, (XInterruptHandler)fnS2MMInterruptHandler, &sAxiDma},
-//	//DMA MemoryMap to Stream Interrupt handler
-//	{XPAR_AXI_INTC_0_AXI_DMA_0_MM2S_INTROUT_INTR, (XInterruptHandler)fnMM2SInterruptHandler, &sAxiDma},
-//	//User I/O (buttons, switches, LEDs)
-//	{XPAR_AXI_INTC_0_AXI_GPIO_0_IP2INTC_IRPT_INTR, (XInterruptHandler)fnUserIOIsr, &sUserIO}
-//};
-//#else
-//const ivt_t ivt[] = {
-//	//IIC
-//	{XPAR_FABRIC_AXI_IIC_0_IIC2INTC_IRPT_INTR, (Xil_ExceptionHandler)XIic_InterruptHandler, &sIic},
-//	//DMA Stream to MemoryMap Interrupt handler
-//	{XPAR_FABRIC_AXI_DMA_0_S2MM_INTROUT_INTR, (Xil_ExceptionHandler)fnS2MMInterruptHandler, &sAxiDma},
-//	//DMA MemoryMap to Stream Interrupt handler
-//	{XPAR_FABRIC_AXI_DMA_0_MM2S_INTROUT_INTR, (Xil_ExceptionHandler)fnMM2SInterruptHandler, &sAxiDma},
-//	//User I/O (buttons, switches, LEDs)
-//	{XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR, (Xil_ExceptionHandler)fnUserIOIsr, &sUserIO}
-//};
-//#endif
-//
-//
-///*****************************************************************************/
-///**
-//*
-//* Main function
-//*
-//* This function is the main entry of the interrupt test. It does the following:
-//*	Initialize the interrupt controller
-//*	Initialize the IIC controller
-//*	Initialize the User I/O driver
-//*	Initialize the DMA engine
-//*	Initialize the Audio I2S controller
-//*	Enable the interrupts
-//*	Wait for a button event then start selected task
-//*	Wait for task to complete
-//*
-//* @param	None
-//*
-//* @return
-//*		- XST_SUCCESS if example finishes successfully
-//*		- XST_FAILURE if example fails.
-//*
-//* @note		None.
-//*
-//******************************************************************************/
-//int main(void)
-//{
-//	int Status;
-//
-//	Demo.u8Verbose = 1;
-//	Demo.fKwsEngineReady = 0;
-//	Demo.fKwsResultValid = 0;
-//	Demo.u32KwsClass = 0;
-//	Demo.fKwsConfidence = 0.0f;
-//
-//	//Xil_DCacheDisable();
-//
-//	xil_printf("\r\n--- Entering main() --- \r\n");
-//
-//
-//	//
-//	//Initialize the interrupt controller
-//
-//	Status = fnInitInterruptController(&sIntc);
-//	if(Status != XST_SUCCESS) {
-//		xil_printf("Error initializing interrupts");
-//		return XST_FAILURE;
-//	}
-//
-//
-//	// Initialize IIC controller
-//	Status = fnInitIic(&sIic);
-//	if(Status != XST_SUCCESS) {
-//		xil_printf("Error initializing I2C controller");
-//		return XST_FAILURE;
-//	}
-//
-//    // Initialize User I/O driver
-//    Status = fnInitUserIO(&sUserIO);
-//    if(Status != XST_SUCCESS) {
-//    	xil_printf("User I/O ERROR");
-//    	return XST_FAILURE;
-//    }
-//
-//
-//	//Initialize DMA
-//	Status = fnConfigDma(&sAxiDma);
-//	if(Status != XST_SUCCESS) {
-//		xil_printf("DMA configuration ERROR");
-//		return XST_FAILURE;
-//	}
-//
-//
-//	//Initialize Audio I2S
-//	Status = fnInitAudio();
-//	if(Status != XST_SUCCESS) {
-//		xil_printf("Audio initializing ERROR");
-//		return XST_FAILURE;
-//	}
-//
-//
-//	// Enable all interrupts in our interrupt vector table
-//	// Make sure all driver instances using interrupts are initialized first
-//	fnEnableInterrupts(&sIntc, &ivt[0], sizeof(ivt)/sizeof(ivt[0]));
-//	// initial KwsEngine
-//	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
-//
-//	if(Status == XST_SUCCESS) {
-//		Demo.fKwsEngineReady = 1;
-//		xil_printf("\r\nKWS engine initialization successful;\r\n");
-//	} else {
-//		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
-//		return Status;
-//	}
-//
-////	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
-//
-////	if(Status == XST_SUCCESS) {
-////		Demo.fKwsEngineReady = 1;
-////	} else {
-////		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
-////	}
-//
-////	Status = KwsEngine_Initialize(KWS_DEFAULT_WEIGHT_PATH);
-///*	if(Status == XST_SUCCESS) {
-//		Demo.fKwsEngineReady = 1;
-//	} else {
-//		xil_printf("\r\nKWS engine initialization failed; inference disabled\r\n");
-//	}*/
-//
-//    xil_printf("\r\nInitialization done");
-//    xil_printf("\r\n");
-//    xil_printf("\r\nControls:");
-//    xil_printf("\r\n    BTNL: Play recording on LINE OUT");
-//    xil_printf("\r\n    BTNU: Record from MIC IN");
-//    xil_printf("\r\n    BTND: Play recording on HPH OUT");
-//    xil_printf("\r\n    BTNR: Record from LINE IN");
-//
-//    //main loop
-//
-//    while(1) {
-//
-////    	fnSetSingleLed(&sUserIO, 2);
-//
-////    	xil_printf("----------------------------------------------------------\r\n");
-////		xil_printf("Genesys 2 DMA Audio Demo\r\n");
-////		xil_printf("----------------------------------------------------------\r\n");
-//
-//    	//Xil_DCacheDisable();
-//
-//    	// Checking the DMA S2MM event flag
-//			if (Demo.fDmaS2MMEvent)
-//			{
-//				xil_printf("\r\nRecording Done...");
-//
-//				// Disable Stream function to send data (S2MM)
-//				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
-//				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
-//				//Flush cache
-//				Xil_DCacheInvalidateRange((u32) MEM_BASE_ADDR, KWS_DMA_TRANSFER_BYTES);
-//
-//				const int engine_ready = (Demo.fKwsEngineReady != 0U) && (KwsEngine_IsReady() != 0);
-//				xil_printf("\r\n Demo_KWS_Ready = %d \r\n", engine_ready);
-//				xil_printf("\r\n Demo.fKwsEngineReady = %d \r\n", Demo.fKwsEngineReady);
-//				xil_printf("\r\n KwsEngine_IsReady = %d \r\n", KwsEngine_IsReady());
-//				if (engine_ready)
-//				{
-//					Demo.fKwsResultValid = 0;
-//					const size_t total_frames = KWS_DMA_TRANSFER_BYTES / I2S_BYTES_PER_FRAME;
-//					const size_t offset_frames = (size_t)(AUDIO_SAMPLING_RATE * BIAS_SEC);
-//					const size_t available_frames = (total_frames > offset_frames) ? (total_frames - offset_frames) : 0U;
-//					const size_t required_frames = (size_t)NR_KWS_SAMPLES * DOWNSAMPLE_RATIO;
-//
-//					if (available_frames >= required_frames)
-//					{
-//						const uint8_t *dma_bytes = (const uint8_t *)(uintptr_t)MEM_BASE_ADDR;
-////						unpack_i2s_frames_to_q31(dma_bytes, total_frames, gMicMonoBuffer);
-//						unpack_i2s_frames_to_q31_le_safe(dma_bytes, total_frames, gMicMonoBuffer);
-//						const int downsample_input = (int)required_frames;
-//						downsample_6x_avg(gMicMonoBuffer + offset_frames, gKwsInputBuffer, downsample_input);
-//						xil_printf("\r\n    sampling done");
-//
-//						u32 classIndex = 0U;
-//						float confidence = 0.0f;
-//						// 保存处理后的文件
-//						FRESULT fr;
-//						char filename[64];
-//
-//						/* 挂载 SD 卡 */
-//						fr = f_mount(&fs, "0:/", 1);
-//						if (fr != FR_OK) {
-//							xil_printf("\r\n[SD] Mount failed (%d)\r\n", fr);
-//						} else {
-//							// 2. 打开或创建文件 record.raw（覆盖写）
-//							fr = f_open(&fil, "0:/record.raw", FA_CREATE_ALWAYS | FA_WRITE);
-//							if (fr == FR_OK) {
-//								UINT bw;
-//								const BYTE *dma_bytes = (const BYTE *)(uintptr_t)gKwsInputBuffer;
-//								UINT total_bytes = NR_KWS_SAMPLES * sizeof(int32_t);
-//
-//								Xil_DCacheInvalidateRange((UINTPTR)dma_bytes, total_bytes);
-//								fr = f_write(&fil, dma_bytes, total_bytes, &bw);
-//
-//								if (fr == FR_OK && bw == total_bytes) {
-//									xil_printf("\r\n[SD] Saved raw audio: record.raw (%lu bytes)\r\n",
-//											   (unsigned long)bw);
-//								} else {
-//									xil_printf("\r\n[SD] Write failed (%d), written %lu bytes\r\n",
-//											   fr, (unsigned long)bw);
-//								}
-//
-//								f_close(&fil);
-//							} else {
-//								xil_printf("\r\n[SD] Open file failed (%d)\r\n", fr);
-//							}
-//						}
-//						//
-//						// 处理KWS
-//						Status = KwsEngine_ProcessRecording(gKwsInputBuffer,
-//							NR_KWS_SAMPLES,
-//							&classIndex,
-//							&confidence);
-//						// 亮灯
-//						int led = classIndex - 2;
-//						if (led<=0) {
-//							led = 0;
-//						}
-//						fnSetSingleLed(&sUserIO, 2);
-//						if (Status == XST_SUCCESS)
-//						{
-//							int scaled = (int)(confidence * 10000.0f + 0.5f);
-//							Demo.u32KwsClass = classIndex;
-//							Demo.fKwsConfidence = confidence;
-//							Demo.fKwsResultValid = 1;
-//							xil_printf("\r\nKWS inference: class %lu (confidence %d.%02d%%)",
-//								(unsigned long)classIndex,
-//								scaled / 100,
-//								scaled % 100);
-//						}
-//						else
-//						{
-//							xil_printf("\r\nKWS inference failed");
-//							Demo.fKwsResultValid = 0;
-//						}
-//						// 直接播放
-//						xil_printf("\r\nStart Playback...\r\n");
-//						fnSetHpOutput();
-//						usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
-//						//
-////    							fnAudioPlay(sAxiDma,AUDIO_SAMPLING_RATE);
-//						fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
-//					}
-//					else
-//					{
-//						xil_printf("\r\nInsufficient microphone audio: have %lu frames, need %lu\r\n",
-//							(unsigned long)available_frames,
-//							(unsigned long)required_frames);
-//						Demo.fKwsResultValid = 0;
-//					}
-//				}
-//				else
-//				{
-//					xil_printf("\r\nKWS engine not ready; skipping inference\r\n");
-//					Demo.fKwsResultValid = 0;
-//				}
-//
-//				// Reset S2MM event and record flag
-//				Demo.fDmaS2MMEvent = 0;
-//				Demo.fAudioRecord = 0;
-//		}
-//
-//		// Checking the DMA MM2S event flag
-//    			if (Demo.fDmaMM2SEvent)
-//    			{
-//    				xil_printf("\r\nPlayback Done...");
-//
-//    				// Disable Stream function to send data (S2MM)
-//    				Xil_Out32(I2S_STREAM_CONTROL_REG, 0x00000000);
-//    				Xil_Out32(I2S_TRANSFER_CONTROL_REG, 0x00000000);
-//    				//Flush cache
-////					//microblaze_flush_dcache();
-//    				//Xil_DCacheFlushRange((u32) MEM_BASE_ADDR, 5*NR_AUDIO_SAMPLES);
-//    				// Reset MM2S event and playback flag
-//    				Demo.fDmaMM2SEvent = 0;
-//    				Demo.fAudioPlayback = 0;
-//    			}
-//
-//    			// Checking the DMA Error event flag
-//    			if (Demo.fDmaError)
-//    			{
-//    				xil_printf("\r\nDma Error...");
-//    				xil_printf("\r\nDma Reset...");
-//
-//
-//    				Demo.fDmaError = 0;
-//    				Demo.fAudioPlayback = 0;
-//    				Demo.fAudioRecord = 0;
-//    			}
-//
-//    			// Checking the btn change event
-//    			if(Demo.fUserIOEvent) {
-//
-//    				switch(Demo.chBtn) {
-//    					case 'u':
-//    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-//    						{
-//    							xil_printf("\r\nStart Recording...\r\n");
-//    							fnSetMicInput();
-//    							usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
-//    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
-////    							fnAudioRecord(sAxiDma,AUDIO_SAMPLING_RATE);
-//    							Demo.fAudioRecord = 1;
-//    						}
-//    						else
-//    						{
-//    							if (Demo.fAudioRecord)
-//    							{
-//    								xil_printf("\r\nStill Recording...\r\n");
-//    							}
-//    							else
-//    							{
-//    								xil_printf("\r\nStill Playing back...\r\n");
-//    							}
-//    						}
-//    						break;
-//    					case 'd':
-//    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-//    						{
-//    							xil_printf("\r\nStart Playback...\r\n");
-//    							fnSetHpOutput();
-//    							usleep(100000); // 寤惰繜100ms锛岃妯℃嫙鍓嶇绋冲畾
-//    							//
-////    							fnAudioPlay(sAxiDma,AUDIO_SAMPLING_RATE);
-//    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
-//    							Demo.fAudioPlayback = 1;
-//    							//
-//    							// 存SD卡
-////    						    FRESULT fr;
-////    						    char filename[64];
-////
-////    						    /* 挂载 SD 卡 */
-////    						    fr = f_mount(&fs, "0:/", 1);
-////    						    if (fr != FR_OK) {
-////    						        xil_printf("\r\n[SD] Mount failed (%d)\r\n", fr);
-////    						    } else {
-////    						        // 2. 打开或创建文件 record.raw（覆盖写）
-////    						        fr = f_open(&fil, "0:/record.raw", FA_CREATE_ALWAYS | FA_WRITE);
-////    						        if (fr == FR_OK) {
-////    						            UINT bw;
-////    						            const BYTE *dma_bytes = (const BYTE *)(uintptr_t)MEM_BASE_ADDR;
-////    						            UINT total_bytes = KWS_DMA_TRANSFER_BYTES;
-////
-////    						            Xil_DCacheInvalidateRange((UINTPTR)dma_bytes, total_bytes);
-////    						            fr = f_write(&fil, dma_bytes, total_bytes, &bw);
-////
-////    						            if (fr == FR_OK && bw == total_bytes) {
-////    						                xil_printf("\r\n[SD] Saved raw audio: record.raw (%lu bytes)\r\n",
-////    						                           (unsigned long)bw);
-////    						            } else {
-////    						                xil_printf("\r\n[SD] Write failed (%d), written %lu bytes\r\n",
-////    						                           fr, (unsigned long)bw);
-////    						            }
-////
-////    						            f_close(&fil);
-////    						        } else {
-////    						            xil_printf("\r\n[SD] Open file failed (%d)\r\n", fr);
-////    						        }
-////    						    }
-//    						    //
-//    						    //
-//    						}
-//    						else
-//    						{
-//    							if (Demo.fAudioRecord)
-//    							{
-//    								xil_printf("\r\nStill Recording...\r\n");
-//    							}
-//    							else
-//    							{
-//    								xil_printf("\r\nStill Playing back...\r\n");
-//    							}
-//    						}
-//    						break;
-//    					case 'r':
-//    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-//    						{
-//    							xil_printf("\r\nStart Recording...\r\n");
-//    							fnSetLineInput();
-//    							fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
-//    							Demo.fAudioRecord = 1;
-//    						}
-//    						else
-//    						{
-//    							if (Demo.fAudioRecord)
-//    							{
-//    								xil_printf("\r\nStill Recording...\r\n");
-//    							}
-//    							else
-//    							{
-//    								xil_printf("\r\nStill Playing back...\r\n");
-//    							}
-//    						}
-//    						break;
-//    					case 'l':
-//    						if (!Demo.fAudioRecord && !Demo.fAudioPlayback)
-//    						{
-//    							xil_printf("\r\nStart Playback...");
-//    							fnSetLineOutput();
-//    							fnAudioPlay(sAxiDma,NR_AUDIO_SAMPLES);
-//    							Demo.fAudioPlayback = 1;
-//    						}
-//    						else
-//    						{
-//    							if (Demo.fAudioRecord)
-//    							{
-//    								xil_printf("\r\nStill Recording...\r\n");
-//    							}
-//    							else
-//    							{
-//    								xil_printf("\r\nStill Playing back...\r\n");
-//    							}
-//    						}
-//    						break;
-//    					default:
-//    						break;
-//    				}
-//
-//    				// Reset the user I/O flag
-//    				Demo.chBtn = 0;
-//    				Demo.fUserIOEvent = 0;
-//
-//
-//    			}
-//    	//usleep(90000);
-//    }
-//
-//	xil_printf("\r\n--- Exiting main() --- \r\n");
-//
-//
-//	return XST_SUCCESS;
-//
-//}
-//
-/******************************************************************************/
-/*  demo.c -- Zynq DMA + Audio + KWS (python-like preprocessing)              */
-/******************************************************************************/
-
 /************************************************************************/
 /*  demo.c -- Zynq DMA + I2S + KWS Demo (16 kHz single-channel input)  */
 /************************************************************************/
@@ -726,6 +19,7 @@
 #include "./userio/userio.h"
 #include "./iic/iic.h"
 #include "./kws/kws_engine.h"
+#include "xtime_l.h"
 
 #ifdef XPAR_INTC_0_DEVICE_ID
  #include "xintc.h"
@@ -736,26 +30,45 @@
 /* ================================================================ */
 /*                     全局常量配置                                 */
 /* ================================================================ */
-#define I2S_BYTES_PER_FRAME     5U
+//#define I2S_BYTES_PER_FRAME     5U
+// 修改为4U
+#define I2S_BYTES_PER_FRAME     4U
 #define AUDIO_SAMPLING_RATE     96000
-#define NR_AUDIO_SAMPLES        (2 * AUDIO_SAMPLING_RATE)   // 2s buffer
-#define START_OFFSET_FRAMES     (AUDIO_SAMPLING_RATE / 2)   // 跳过前0.5 s
-#define SEGMENT_FRAMES          (AUDIO_SAMPLING_RATE)       // 1 s音频
-
 #define KWS_TARGET_SR           16000
 #define NR_KWS_SAMPLES          KWS_TARGET_SR
+// 时间
+#define NR_AUDIO_TIME_OFF          0.5 // 舍掉前面0.5s的时间
+#define NR_AUDIO_TIME_KWS          1   // kws推理需要的时间
+#define NR_AUDIO_TIME_ALL          NR_AUDIO_TIME_OFF + NR_AUDIO_TIME_KWS  // 总的录音时间
+
+// 后缀加kws则代表时间为1，ori则代表有前面的偏移，off则代表是前面的偏移量
+#define NR_AUDIO_SAMPLES_1c_ori        1 * (NR_AUDIO_TIME_ALL * AUDIO_SAMPLING_RATE)   // 1.5s总的录音音频 单音道，用来作为测试使用
+
+#define NR_AUDIO_SAMPLES_2c_ori  (int)(2 * (NR_AUDIO_TIME_ALL * AUDIO_SAMPLING_RATE))   // 1.5s总的录音音频 需要乘2代表左右声道
+#define NR_AUDIO_SAMPLES_2c_off  (int)(2 * (NR_AUDIO_TIME_OFF * AUDIO_SAMPLING_RATE))   // 跳过前0.5 s 乘以2代表左右声道
+
+//预处理
+#define NR_AUDIO_SAMPLES_1c_kws        1 * (NR_AUDIO_TIME_KWS * AUDIO_SAMPLING_RATE)       // 1 s音频
+#define NR_KWS_SAMPLES_1c_kws          1 * (NR_AUDIO_TIME_KWS * NR_KWS_SAMPLES)
+
 #define DOWNSAMPLE_RATIO        6
-#define KWS_DMA_TRANSFER_BYTES  (I2S_BYTES_PER_FRAME * NR_AUDIO_SAMPLES)
+// DMA 总传输字节
+#define KWS_DMA_TRANSFER_BYTES  (I2S_BYTES_PER_FRAME * NR_AUDIO_SAMPLES_2c_ori)
 
 /* ================================================================ */
 /*                       全局变量                                   */
 /* ================================================================ */
 volatile sDemo_t Demo = {0};
-static FATFS fs; static FIL fil;
-static int32_t gMicMono96k[NR_AUDIO_SAMPLES];
-static int32_t gKws16k[NR_KWS_SAMPLES];
-static int16_t gKws16kPcm16[NR_KWS_SAMPLES];
-static int32_t gPlayback96k[SEGMENT_FRAMES];
+//static FATFS fs; static FIL fil;
+//static int32_t gMicMono96k[NR_AUDIO_SAMPLES_KWS]; // 1s音频输入，采样率为96K, 左右声道归一后的
+//static int32_t gKws16k[NR_KWS_SAMPLES];       // kws音频输入
+//static int16_t gKws16kPcm16[NR_KWS_SAMPLES];
+//static int32_t gPlayback96k[SEGMENT_FRAMES];
+
+static int32_t gMic_96k_2[NR_AUDIO_SAMPLES_2c_ori]; // 用来测试单双音道 1.5s
+// 双通道变单通道
+static int32_t gMic_96k_1[NR_AUDIO_SAMPLES_1c_kws]; // 单音道
+static int32_t gMic_16k_1[NR_KWS_SAMPLES_1c_kws];
 
 /* ================================================================ */
 /*                   外设实例与中断向量表                            */
@@ -788,155 +101,87 @@ const ivt_t ivt[] = {
 /* ================================================================ */
 /*                     实用函数                                     */
 /* ================================================================ */
-static void fnSetSingleLed(XGpio *psGpio, u8 ledIndex)
+// 用来测试使用 通过mix_mode对左右声道进行处理来判断
+static void test(const int32_t *src_ptr,
+					   int32_t *dst_mono,
+					   size_t total_bytes,
+					   int mix_mode)
 {
-    u32 v = (ledIndex < 8) ? (1U << ledIndex) : 0U;
-    XGpio_DiscreteWrite(psGpio, LED_CHANNEL, v);
-}
+    for (size_t i = 0; i < total_bytes; ++i) {
+        int32_t left  = src_ptr[2 * i + 0];
+        int32_t right = src_ptr[2 * i + 1];
 
-static int32_t sign_extend_20bit(uint32_t v)
-{
-    if (v & 0x80000U) v |= 0xFFF00000U;
-    return (int32_t)v;
-}
-
-static uint8_t get_stream_byte(const uint8_t *src,
-                               size_t total_bytes,
-                               size_t byte_index,
-                               int reversed)
-{
-    if (!reversed) {
-        if (byte_index < total_bytes) {
-            return src[byte_index];
+        int32_t mono_left;
+        int32_t mono_right;
+        if (mix_mode == 0){
+        	mono_left = left;
+        	mono_right = 0;
         }
-        return 0U;
-    }
-
-    size_t word_index = byte_index / 4U;
-    size_t base = word_index * 4U;
-    uint8_t reordered[4] = {0U, 0U, 0U, 0U};
-
-    if (base < total_bytes) {
-        size_t remaining = total_bytes - base;
-        size_t copy = (remaining < 4U) ? remaining : 4U;
-        for (size_t i = 0U; i < copy; ++i) {
-            reordered[3U - i] = src[base + i];
+        else if (mix_mode == 1){
+        	mono_left = 0;
+        	mono_right = right;
         }
+        else{
+            mono_left = (left >> 1) + (right >> 1);  // 避免溢出
+            mono_right = (left >> 1) + (right >> 1);  // 避免溢出
+        }
+        dst_mono[2 * i + 0] = mono_left;
+        dst_mono[2 * i + 1] = mono_right;
     }
-
-    return reordered[byte_index % 4U];
 }
-
-/* I2S 解包：5 Bytes → 单声道Q31样本 */
-static void decode_i2s_frame(const uint8_t *src,
-                             size_t total_bytes,
-                             size_t frame_idx,
-                             int reversed,
-                             int32_t *left_q31,
-                             int32_t *right_q31)
+// 混合声道加下采样
+/**
+ * @brief 从DMA内存中提取交错的左右声道，混合成单声道
+ * @param src_ptr   DMA写入的基址 (MEM_BASE_ADDR)
+ * @param dst_mono  输出单声道缓冲区 (int32_t[])
+ * @param total_frames  总帧数 (L+R对数)
+ * @param mix_mode  0=取左声道, 1=取右声道, 2=平均混合
+ */
+static void mix_stereo_to_mono(const int32_t *src_ptr,
+                               int32_t *dst_mono,
+                               size_t total_frames,
+                               int mix_mode)
 {
-    size_t byte_base = frame_idx * I2S_BYTES_PER_FRAME;
-    uint32_t B0 = get_stream_byte(src, total_bytes, byte_base + 0U, reversed);
-    uint32_t B1 = get_stream_byte(src, total_bytes, byte_base + 1U, reversed);
-    uint32_t B2 = get_stream_byte(src, total_bytes, byte_base + 2U, reversed);
-    uint32_t B3 = get_stream_byte(src, total_bytes, byte_base + 3U, reversed);
-    uint32_t B4 = get_stream_byte(src, total_bytes, byte_base + 4U, reversed);
+    for (size_t i = 0; i < total_frames; ++i) {
+        int32_t left  = src_ptr[2 * i + 0];
+        int32_t right = src_ptr[2 * i + 1];
 
-    uint32_t left_u  = (B0 << 12) | (B1 << 4) | (B2 >> 4);
-    uint32_t right_u = ((B2 & 0x0F) << 16) | (B3 << 8) | B4;
-    *left_q31  = sign_extend_20bit(left_u)  << 12;
-    *right_q31 = sign_extend_20bit(right_u) << 12;
-}
-
-static int detect_dma_byte_reversal(const uint8_t *src, size_t frames)
-{
-    if (frames < 2U) {
-        return 0;
+        int32_t mono;
+        if (mix_mode == 0)
+            mono = left;
+        else if (mix_mode == 1)
+            mono = right;
+        else
+            mono = (left >> 1) + (right >> 1);  // 避免溢出
+        dst_mono[i] = mono;
     }
-
-    size_t check_frames = frames < 256U ? frames : 256U;
-    int64_t normal_score = 0;
-    int64_t reversed_score = 0;
-    int32_t prev_normal = 0;
-    int32_t prev_reversed = 0;
-    int first = 1;
-    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
-
-    for (size_t i = 0; i < check_frames; ++i) {
-        int32_t left_normal, right_normal;
-        int32_t left_reversed, right_reversed;
-
-        decode_i2s_frame(src, total_bytes, i, 0, &left_normal, &right_normal);
-        decode_i2s_frame(src, total_bytes, i, 1, &left_reversed, &right_reversed);
-
-        int32_t mono_normal = (left_normal + right_normal) >> 1;
-        int32_t mono_reversed = (left_reversed + right_reversed) >> 1;
-
-        if (!first) {
-            normal_score += llabs((int64_t)mono_normal - prev_normal);
-            reversed_score += llabs((int64_t)mono_reversed - prev_reversed);
+}
+/**
+ * @brief 简单整数倍下采样（平均法或取样法）
+ * @param in96k   输入信号（96k）
+ * @param out16k  输出信号（16k）
+ * @param n_in    输入样本数
+ * @param ratio   下采样比例 (6或7)
+ * @param use_avg 是否采用平均法 (1=平均, 0=取第一个点)
+ */
+static int downsample_int(const int32_t *in96k,
+                           int32_t *out16k,
+                           int n_in,
+                           int ratio,
+                           int use_avg)
+{
+    int out_n = n_in / ratio;
+    for (int i = 0; i < out_n; ++i) {
+        if (use_avg) {
+            int64_t acc = 0;
+            for (int j = 0; j < ratio; ++j)
+                acc += in96k[i * ratio + j];
+            out16k[i] = (int32_t)(acc / ratio);
         } else {
-            first = 0;
+            out16k[i] = in96k[i * ratio];
         }
-
-        prev_normal = mono_normal;
-        prev_reversed = mono_reversed;
     }
-
-    return reversed_score < normal_score;
-}
-
-static void unpack_i2s_frames_to_q31_le_safe(const uint8_t *src, size_t frames, int32_t *dst)
-{
-    if (frames == 0U) {
-        return;
-    }
-
-    int reversed = detect_dma_byte_reversal(src, frames);
-    xil_printf("[I2S] Byte order: %s\r\n",
-               reversed ? "little-endian (DMA reversed)"
-                        : "big-endian (standard)");
-
-    size_t total_bytes = frames * I2S_BYTES_PER_FRAME;
-
-    for (size_t i = 0; i < frames; ++i) {
-        int32_t left, right;
-        decode_i2s_frame(src, total_bytes, i, reversed, &left, &right);
-        dst[i] = (left + right) >> 1;
-    }
-}
-
-/* 6×下采样 */
-static void downsample_6x_avg(const int32_t *in, int32_t *out, int input_samples)
-{
-    int out_samples = input_samples / DOWNSAMPLE_RATIO;
-    for (int i = 0; i < out_samples; ++i) {
-        int64_t acc = 0;
-        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
-            acc += in[i * DOWNSAMPLE_RATIO + j];
-        out[i] = (int32_t)(acc / DOWNSAMPLE_RATIO);
-    }
-}
-
-/* 6×上采样（回放） */
-static void upsample_6x_for_playback(const int32_t *in16k, int32_t *out96k, int n_in)
-{
-    for (int i = 0; i < n_in; ++i)
-        for (int j = 0; j < DOWNSAMPLE_RATIO; ++j)
-            out96k[i*DOWNSAMPLE_RATIO+j] = in16k[i];
-}
-
-static void q31_to_pcm16(const int32_t *src, int16_t *dst, size_t samples)
-{
-    for (size_t i = 0; i < samples; ++i) {
-        int32_t v = src[i] >> 16;  /* 20-bit 样本 → 16-bit PCM */
-        if (v > 32767) {
-            v = 32767;
-        } else if (v < -32768) {
-            v = -32768;
-        }
-        dst[i] = (int16_t)v;
-    }
+   return out_n;
 }
 
 typedef struct __attribute__((__packed__)) {
@@ -955,72 +200,6 @@ typedef struct __attribute__((__packed__)) {
     uint32_t data_size;
 } wav_header_t;
 
-static void fill_wav_header(wav_header_t *hdr, uint32_t sample_rate, uint32_t frames)
-{
-    const uint32_t data_bytes = frames * sizeof(int16_t);
-    memcpy(hdr->riff_id, "RIFF", 4);
-    hdr->riff_size = 36U + data_bytes;
-    memcpy(hdr->wave_id, "WAVE", 4);
-    memcpy(hdr->fmt_id,  "fmt ", 4);
-    hdr->fmt_size       = 16U;
-    hdr->audio_format   = 1U;
-    hdr->num_channels   = 1U;
-    hdr->sample_rate    = sample_rate;
-    hdr->block_align    = sizeof(int16_t);
-    hdr->byte_rate      = sample_rate * hdr->block_align;
-    hdr->bits_per_sample = 16U;
-    memcpy(hdr->data_id, "data", 4);
-    hdr->data_size = data_bytes;
-}
-
-static void save_kws_audio_to_sd(const char *path, const int32_t *buf, size_t samples, uint32_t sample_rate)
-{
-    FATFS *pfs = &fs;
-    FRESULT fr = f_mount(pfs, "0:/", 1);
-    if (fr != FR_OK) {
-        xil_printf("[SD] Mount failed (%d)\r\n", fr);
-        return;
-    }
-
-    const char *open_path = path;
-    fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
-    if (fr == FR_INVALID_NAME) {
-        static const char fallback_path[] = "0:/REC16K.WAV";
-        xil_printf("[SD] Invalid filename '%s', falling back to %s\r\n",
-                   path, fallback_path);
-        open_path = fallback_path;
-        fr = f_open(&fil, open_path, FA_CREATE_ALWAYS | FA_WRITE);
-    }
-
-    if (fr != FR_OK) {
-        xil_printf("[SD] Open file failed (%d)\r\n", fr);
-        return;
-    }
-
-    q31_to_pcm16(buf, gKws16kPcm16, samples);
-
-    wav_header_t header;
-    fill_wav_header(&header, sample_rate, (uint32_t)samples);
-
-    UINT bw = 0U;
-    Xil_DCacheFlushRange((UINTPTR)&header, sizeof(header));
-    fr = f_write(&fil, &header, sizeof(header), &bw);
-    if (fr != FR_OK || bw != sizeof(header)) {
-        xil_printf("[SD] Write header failed (%d, %lu)\r\n", fr, (unsigned long)bw);
-        f_close(&fil);
-        return;
-    }
-
-    UINT data_bytes = samples * sizeof(int16_t);
-    Xil_DCacheFlushRange((UINTPTR)gKws16kPcm16, data_bytes);
-    fr = f_write(&fil, gKws16kPcm16, data_bytes, &bw);
-    if (fr != FR_OK || bw != data_bytes) {
-        xil_printf("[SD] Write payload failed (%d, %lu/%u)\r\n", fr, (unsigned long)bw, data_bytes);
-    }
-    f_close(&fil);
-
-    xil_printf("[SD] %s saved\r\n", open_path);
-}
 /* ================================================================ */
 /*                       主程序入口                                 */
 /* ================================================================ */
@@ -1041,7 +220,8 @@ int main(void)
     Demo.fKwsEngineReady=1; xil_printf("KWS engine ready\r\n");
 
     xil_printf("Press BTNU to record 1 s audio, auto-play & run KWS\r\n");
-
+//    XTime tStart, tEnd;
+//    int duration; // 计时
     while(1){
         /* ========== 录音完成 ========== */
         if(Demo.fDmaS2MMEvent){
@@ -1050,28 +230,83 @@ int main(void)
             Xil_Out32(I2S_TRANSFER_CONTROL_REG,0);
             Xil_DCacheInvalidateRange((UINTPTR)MEM_BASE_ADDR,KWS_DMA_TRANSFER_BYTES);
 
-            const uint8_t *dma_bytes=(const uint8_t*)(uintptr_t)MEM_BASE_ADDR;
-            const size_t total_frames=KWS_DMA_TRANSFER_BYTES/I2S_BYTES_PER_FRAME;
-            unpack_i2s_frames_to_q31_le_safe(dma_bytes,total_frames,gMicMono96k);
+//            const uint8_t *dma_bytes=(const uint8_t*)(uintptr_t)MEM_BASE_ADDR;
+//            const size_t total_frames=KWS_DMA_TRANSFER_BYTES/I2S_BYTES_PER_FRAME;
 
-            downsample_6x_avg(gMicMono96k+START_OFFSET_FRAMES,gKws16k,SEGMENT_FRAMES);
-            save_kws_audio_to_sd("0:/record_16k.wav", gKws16k, NR_KWS_SAMPLES, KWS_TARGET_SR);
+            // 解包
+//            unpack_i2s_frames_to_q31_le_safe(dma_bytes,total_frames,gMicMono96k);
+            // 下采样
+//            downsample_6x_avg(gMicMono96k+START_OFFSET_FRAMES,gKws16k,SEGMENT_FRAMES);
+//             双通道改为单通道
+            const int32_t *dma_samples =(const int32_t*)(uintptr_t)MEM_BASE_ADDR;
+            int test_mix_mode = 1; // 0=左声道, 1=右声道, 2=混合
+            test(dma_samples, gMic_96k_2, NR_AUDIO_SAMPLES_1c_ori, test_mix_mode);
+            // 偏移后的基地址
+            // 双通道变两通道
+            const int32_t *kws_samples = ((const int32_t*)(UINTPTR)MEM_BASE_ADDR) + NR_AUDIO_SAMPLES_2c_off;
+			//添加查看的代码
+//			uint32_t *p = (uint32_t *)(uintptr_t)MEM_BASE_ADDR;
+			for (int i = 0; i < 10; i++) {
+				xil_printf("[%d] L=%08x  R=%08x\r\n", i, kws_samples[2*i], kws_samples[2*i+1]);
+			}
+			//
+            int mix_mode = 0;
+            mix_stereo_to_mono(kws_samples, gMic_96k_1, NR_AUDIO_SAMPLES_1c_kws, mix_mode);
+            //
 
-            /* 自动播放：与 KWS 输入同一时间段 */
-            upsample_6x_for_playback(gKws16k,gPlayback96k,NR_KWS_SAMPLES);
-            UINTPTR playback_base = (UINTPTR)MEM_BASE_ADDR +
-                                   (UINTPTR)START_OFFSET_FRAMES * I2S_BYTES_PER_FRAME;
-            fnSetHpOutput(); usleep(100000);
-            fnAudioPlay(sAxiDma, playback_base, SEGMENT_FRAMES);
+            // 下采样
+            int down_load_mode = 0;
 
-            /* KWS 推理 */
-            u32 cls=0; float conf=0.0f;
-            if(KwsEngine_ProcessRecording(gKws16k,NR_KWS_SAMPLES,&cls,&conf)==XST_SUCCESS){
-                int scaled=(int)(conf*10000.0f+0.5f);
-                xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
-                    (unsigned long)cls,scaled/100,scaled%100);
-                fnSetSingleLed(&sUserIO,(cls-2)%8);
-            } else xil_printf("KWS inference failed\r\n");
+            int out_dim = downsample_int(gMic_96k_1, gMic_16k_1, NR_AUDIO_SAMPLES_1c_kws, DOWNSAMPLE_RATIO, down_load_mode);
+            xil_printf("down load dim = %d \r\n", out_dim);
+//            // 输入到KWS网络
+//			/* KWS 推理 */
+//			u32 cls=0; float conf=0.0f;
+//			if(KwsEngine_ProcessRecording(gMic_16k_1,NR_KWS_SAMPLES,&cls,&conf)==XST_SUCCESS){
+//				int scaled=(int)(conf*10000.0f+0.5f);
+//				xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
+//					(unsigned long)cls,scaled/100,scaled%100);
+//				// 亮灯
+//				fnSetSingleLed(&sUserIO,(cls-2)%8);
+//			} else xil_printf("KWS inference failed\r\n");
+
+
+//            const int32_t *dma_samples = (const int32_t*)(uintptr_t)MEM_BASE_ADDR + START_OFFSET_FRAMES * 2; //跳过前面0。5s音频，因为此时还是双音道，所以乘2
+//
+//            size_t total_lr_pairs = 2 * NR_AUDIO_SAMPLES;  // 1 frame = 1 left+right pair 2乘以总的采样点数
+//            mix_stereo_to_mono(dma_samples, );
+//
+//            /* 自动播放：与 KWS 输入同一时间段 */
+//            upsample_6x_for_playback(gKws16k,gPlayback96k,NR_KWS_SAMPLES);
+//            UINTPTR playback_base = (UINTPTR)MEM_BASE_ADDR +
+//                                   (UINTPTR)START_OFFSET_FRAMES * I2S_BYTES_PER_FRAME;
+//            fnSetHpOutput();
+//            usleep(100000);
+//            fnAudioPlay(sAxiDma, playback_base, SEGMENT_FRAMES);
+
+
+//            //添加查看的代码
+//            uint32_t *p = (uint32_t *)(uintptr_t)MEM_BASE_ADDR;
+//            for (int i = 0; i < 10; i++) {
+//                xil_printf("[%d] L=%08x  R=%08x\r\n", i, p[2*i], p[2*i+1]);
+//            }
+
+//            xil_printf("\r\n[DMA] Dump first 64 bytes from MEM_BASE_ADDR = 0x%08X\r\n",
+//                       (unsigned int)MEM_BASE_ADDR);
+//            for (int i = 0; i < 64; i++) {
+//                xil_printf("%02X ", p[i]);
+//                if ((i & 0x0F) == 0x0F) xil_printf("\r\n");  // 每16字节换行
+//            }
+
+//
+//            /* KWS 推理 */
+//            u32 cls=0; float conf=0.0f;
+//            if(KwsEngine_ProcessRecording(gKws16k,NR_KWS_SAMPLES,&cls,&conf)==XST_SUCCESS){
+//                int scaled=(int)(conf*10000.0f+0.5f);
+//                xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
+//                    (unsigned long)cls,scaled/100,scaled%100);
+//                fnSetSingleLed(&sUserIO,(cls-2)%8);
+//            } else xil_printf("KWS inference failed\r\n");
 
             Demo.fDmaS2MMEvent=0; Demo.fAudioRecord=0;
         }
@@ -1081,6 +316,9 @@ int main(void)
             xil_printf("[PLAY] done\r\n");
             Xil_Out32(I2S_STREAM_CONTROL_REG,0);
             Xil_Out32(I2S_TRANSFER_CONTROL_REG,0);
+//			XTime_GetTime(&tEnd);
+//			duration = (int)((double)(tEnd - tStart) * 1000 / (COUNTS_PER_SECOND));
+//			xil_printf("[Timer] Record duration = %d s\r\n", duration);
             Demo.fDmaMM2SEvent=0; Demo.fAudioPlayback=0;
         }
 
@@ -1089,12 +327,19 @@ int main(void)
             if(Demo.chBtn=='u' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
                 xil_printf("Start Recording...\r\n");
                 fnSetMicInput(); usleep(100000);
-                fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+//                fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES);
+                fnAudioRecord(sAxiDma,NR_AUDIO_SAMPLES_2c_ori);
                 Demo.fAudioRecord=1;
             } else if(Demo.chBtn=='d' && !Demo.fAudioRecord && !Demo.fAudioPlayback){
                 xil_printf("Start Playback...\r\n");
                 fnSetHpOutput(); usleep(100000);
-                fnAudioPlay(sAxiDma,(UINTPTR)MEM_BASE_ADDR,NR_AUDIO_SAMPLES);
+                //
+//                XTime_GetTime(&tStart);
+                fnAudioPlay(sAxiDma,(UINTPTR)gMic_96k_2,NR_AUDIO_SAMPLES_2c_ori);
+                // 只输出截取后的音频
+//                const int32_t *dma_samples = ((const int32_t*)(UINTPTR)MEM_BASE_ADDR) + NR_AUDIO_SAMPLES_2c_off;
+//                fnAudioPlay(sAxiDma,(UINTPTR)dma_samples, NR_AUDIO_SAMPLES_1c_kws * 2);
+                //
                 Demo.fAudioPlayback=1;
             }
             Demo.fUserIOEvent=0; Demo.chBtn=0;

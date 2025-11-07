@@ -115,7 +115,9 @@
 
 /**************************** Type Definitions *******************************/
 #define AUDIO_FRAME_STRIDE	  KWS_SOURCE_CHANNELS
-#define AUDIO_SAMPLE_BYTES	  5U
+//#define AUDIO_SAMPLE_BYTES	  5U
+// 修改为4U
+#define AUDIO_SAMPLE_BYTES	  4U
 #define KWS_SAMPLE_BYTES	  4U
 #define AUDIO_BUFFER_BYTES	  ((size_t)NR_SEC_TO_REC_PLAY * AUDIO_SAMPLING_RATE * AUDIO_FRAME_STRIDE * AUDIO_SAMPLE_BYTES)
 
