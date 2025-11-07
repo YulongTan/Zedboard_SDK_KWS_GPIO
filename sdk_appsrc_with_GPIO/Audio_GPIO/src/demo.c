@@ -101,29 +101,40 @@ const ivt_t ivt[] = {
 /* ================================================================ */
 /*                     实用函数                                     */
 /* ================================================================ */
+static inline int32_t sign_extend_24(int32_t raw)
+{
+    /* ADAU1761 以 24-bit 采样输出到 32-bit 宽度，总是右对齐，
+     * 因此需要手动进行符号扩展，否则所有负值都会被当成正值，
+     * 后续的 KWS 特征提取将完全失真。 */
+    return (raw << 8) >> 8;
+}
+
 // 用来测试使用 通过mix_mode对左右声道进行处理来判断
 static void test(const int32_t *src_ptr,
-					   int32_t *dst_mono,
-					   size_t total_bytes,
-					   int mix_mode)
+                                           int32_t *dst_mono,
+                                           size_t total_bytes,
+                                           int mix_mode)
 {
     for (size_t i = 0; i < total_bytes; ++i) {
-        int32_t left  = src_ptr[2 * i + 0];
-        int32_t right = src_ptr[2 * i + 1];
+        int32_t left_raw  = src_ptr[2 * i + 0];
+        int32_t right_raw = src_ptr[2 * i + 1];
+        int32_t left  = sign_extend_24(left_raw);
+        int32_t right = sign_extend_24(right_raw);
 
         int32_t mono_left;
         int32_t mono_right;
         if (mix_mode == 0){
-        	mono_left = left;
-        	mono_right = 0;
+                mono_left = left;
+                mono_right = 0;
         }
         else if (mix_mode == 1){
-        	mono_left = 0;
-        	mono_right = right;
+                mono_left = 0;
+                mono_right = right;
         }
         else{
-            mono_left = (left >> 1) + (right >> 1);  // 避免溢出
-            mono_right = (left >> 1) + (right >> 1);  // 避免溢出
+            int32_t mixed = (left >> 1) + (right >> 1);  // 避免溢出
+            mono_left = mixed;
+            mono_right = mixed;
         }
         dst_mono[2 * i + 0] = mono_left;
         dst_mono[2 * i + 1] = mono_right;
@@ -143,8 +154,8 @@ static void mix_stereo_to_mono(const int32_t *src_ptr,
                                int mix_mode)
 {
     for (size_t i = 0; i < total_frames; ++i) {
-        int32_t left  = src_ptr[2 * i + 0];
-        int32_t right = src_ptr[2 * i + 1];
+        int32_t left  = sign_extend_24(src_ptr[2 * i + 0]);
+        int32_t right = sign_extend_24(src_ptr[2 * i + 1]);
 
         int32_t mono;
         if (mix_mode == 0)
@@ -238,37 +249,38 @@ int main(void)
             // 下采样
 //            downsample_6x_avg(gMicMono96k+START_OFFSET_FRAMES,gKws16k,SEGMENT_FRAMES);
 //             双通道改为单通道
-            const int32_t *dma_samples =(const int32_t*)(uintptr_t)MEM_BASE_ADDR;
-            int test_mix_mode = 1; // 0=左声道, 1=右声道, 2=混合
-            test(dma_samples, gMic_96k_2, NR_AUDIO_SAMPLES_1c_ori, test_mix_mode);
-            // 偏移后的基地址
-            // 双通道变两通道
+            const int32_t *dma_samples = (const int32_t*)(uintptr_t)MEM_BASE_ADDR;
+            const int mix_mode = 0; // 0=左声道，1=右声道，2=平均
+            test(dma_samples, gMic_96k_2, NR_AUDIO_SAMPLES_1c_ori, mix_mode);
+            // 偏移后的基地址，跳过前 0.5 s
             const int32_t *kws_samples = ((const int32_t*)(UINTPTR)MEM_BASE_ADDR) + NR_AUDIO_SAMPLES_2c_off;
-			//添加查看的代码
-//			uint32_t *p = (uint32_t *)(uintptr_t)MEM_BASE_ADDR;
-			for (int i = 0; i < 10; i++) {
-				xil_printf("[%d] L=%08x  R=%08x\r\n", i, kws_samples[2*i], kws_samples[2*i+1]);
-			}
-			//
-            int mix_mode = 0;
+
+            // 单声道提取
             mix_stereo_to_mono(kws_samples, gMic_96k_1, NR_AUDIO_SAMPLES_1c_kws, mix_mode);
-            //
 
             // 下采样
-            int down_load_mode = 0;
+            const int down_load_mode = 1; // 使用平均法抑制高频噪声
+            int out_dim = downsample_int(gMic_96k_1, gMic_16k_1, NR_AUDIO_SAMPLES_1c_kws,
+                                        DOWNSAMPLE_RATIO, down_load_mode);
+            xil_printf("down sample dim = %d \r\n", out_dim);
 
-            int out_dim = downsample_int(gMic_96k_1, gMic_16k_1, NR_AUDIO_SAMPLES_1c_kws, DOWNSAMPLE_RATIO, down_load_mode);
-            xil_printf("down load dim = %d \r\n", out_dim);
-//            // 输入到KWS网络
-//			/* KWS 推理 */
-//			u32 cls=0; float conf=0.0f;
-//			if(KwsEngine_ProcessRecording(gMic_16k_1,NR_KWS_SAMPLES,&cls,&conf)==XST_SUCCESS){
-//				int scaled=(int)(conf*10000.0f+0.5f);
-//				xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
-//					(unsigned long)cls,scaled/100,scaled%100);
-//				// 亮灯
-//				fnSetSingleLed(&sUserIO,(cls-2)%8);
-//			} else xil_printf("KWS inference failed\r\n");
+            // 输入到KWS网络
+            if (Demo.fKwsEngineReady) {
+                if (out_dim < NR_KWS_SAMPLES) {
+                    xil_printf("KWS: insufficient samples (%d < %d)\r\n", out_dim, NR_KWS_SAMPLES);
+                } else {
+                    u32 cls = 0U;
+                    float conf = 0.0f;
+                    if (KwsEngine_ProcessRecording(gMic_16k_1, out_dim, &cls, &conf) == XST_SUCCESS) {
+                        int scaled = (int)(conf * 10000.0f + 0.5f);
+                        xil_printf("KWS: class=%lu, conf=%d.%02d%%\r\n",
+                                   (unsigned long)cls, scaled / 100, scaled % 100);
+                        fnSetSingleLed(&sUserIO, (cls >= 2U) ? ((cls - 2U) % 8U) : 0U);
+                    } else {
+                        xil_printf("KWS inference failed\r\n");
+                    }
+                }
+            }
 
 
 //            const int32_t *dma_samples = (const int32_t*)(uintptr_t)MEM_BASE_ADDR + START_OFFSET_FRAMES * 2; //跳过前面0。5s音频，因为此时还是双音道，所以乘2
